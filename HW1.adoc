@@ -1,0 +1,81 @@
+[big]#EECS 660 HW1#
+======================
+Author: Luke Dercher
+
+-------------------
+def stableMatching (M,W) {
+    Initialize all m ∈ M and w ∈ W to free
+    while ∃ free man m who still has a woman w to propose to {
+       w = first woman on m’s list to whom m has not yet proposed
+       if w is free
+         (m, w) become engaged
+       else some pair (m', w) already exists
+         if w prefers m to m'
+            m' becomes free
+           (m, w) become engaged 
+         else
+           (m', w) remain engaged
+    }
+}
+
+-------------------
+
+.1.1. True or false? In every instance of the stable matching problem there is a stable matching containing a pair (m,w) such that m is ranked first on the preference list of w and w is ranked first on the preference list of m.
+-----------------------------------------------------------------------------------------------------------------------------
+False,  consider the example where
+    m prefers w to w'
+    m' prefers w' to w
+    w prefers m' to m
+    w' prefers m to m'
+In this case there are no pairs where they rank each other first. Hence no pairs will show up where they have ranked each other highest on their preference list. 
+-----------------------------------------------------------------------------------------------------------------------------
+
+.1.2 True or false? Consider an instance of the stable matching problem in which there exists a man m and a woman w such that m is ranked first on the preference list of w and w is ranked first on the preference list of m. Then in every stable matching S for this instance, the pair (m,w) belongs to S.
+-----------------------------------------------------------------------------------------------------------------------------
+True, consider an example of a perfect matching which contains (m,w') and (m',w) and not (m,w). Since m and w prefer each other to their partners, this matching cannot be stable.
+-----------------------------------------------------------------------------------------------------------------------------
+
+.1.4 Now use a modified Gale-Shapely algorithm to assign medical students to hospitals with no instability (note: some students may not be assigned)
+----------------------------------------------------------------
+2 types of instability
+ 1.There are students s and s', and a hospital h such that
+    * s is assigned to h, and
+    * s' is assigned to no hospital, and
+    * h prefers s' to s
+ 2. There are students s and s', and hospitals h and h', such that
+    * s is assigned to h
+    * s' is assigned to h'
+    * h preferes s' to s
+    * s' prefers h to h'
+----------------------------------------------------------------
+
+.While hospital h~i~ has available positions
+
+* h~i~ offers a position to the next student s~j~ on it's preferences list 
+** if s~j~ is free then
+*** s~j~ accepts the offer
+** else s~j~ is assigned to hospital h~k~
+** if s~j~ prefers h~k~ to h~i~ then
+*** s~j~ remains committed to h~k~
+** else s~j~ becomes committed to h~k~
+*** the number of available positions at h~k~ increases by one.
+*** the number of available positions at h~i~ decreases by one.
+
+
+.The algorithm creates a stable matching as follows
+ * in the first case
+    ** suppose we have students s and s' and hospital h. If h prefers s' to s, then h would have offered a position to s' before it offered one to s. s' would then have a position at some hospital and would not be free.
+    ** This is a contradiction
+ * second case
+    ** suppose pair (h~i~,s~j~) is a pair that causes instability.
+    ** It must be that h~i~ has offered a position to s~j~
+    ** s~j~ must have rejected h~i~ in favor of some h~k~ which he/she/(insert gender pronoun) preffered
+    ** it must be the case that s~j~ is assigned to some hospital h~l~. Which is possibly different than h~k~ and prefers over h~i~.
+
+
+
+
+
+
+
+
