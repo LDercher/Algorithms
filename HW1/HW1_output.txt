@@ -1,0 +1,19 @@
+HW1 python output
+
+-Luke Dercher
+
+sum from 1 to 100 = 5050 
+
+
+sum squared from 1 to 100 = 338350 
+
+
+sum of k squared plus k plus 1 from 12 to 123 = 635040 
+
+
+S(10) =
+[2, 3, 5, 7]
+
+
+S(100) =
+[2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97]

@@ -57,7 +57,7 @@ True, consider an example of a perfect matching which contains (m,w') and (m',w)
 ** else s~j~ is assigned to hospital h~k~
 ** if s~j~ prefers h~k~ to h~i~ then
 *** s~j~ remains committed to h~k~
-** else s~j~ becomes committed to h~k~
+** else s~j~ becomes committed to h~i~
 *** the number of available positions at h~k~ increases by one.
 *** the number of available positions at h~i~ decreases by one.
 
