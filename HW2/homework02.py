@@ -1,6 +1,7 @@
 # imports {{{1
 from __future__ import division
 import math
+import pdb
 from random import randrange
 #---------------------------------------------------------------------------}}}1
 
@@ -40,7 +41,7 @@ class Heap: # {{{1
     # above, the index of node f is 5, so Heap._parent_index(5) = 2, the index
     # of the node c.
 
-    return # remove in your solution
+    return None if index <= 0 else int(math.floor(index /2))
   #--------------------------------------------------------------------------}}}
   def _parent(self, index): # {{{
     # Return the parent of the node at the given index. In the example above,
@@ -48,8 +49,7 @@ class Heap: # {{{1
     # python value of None if there is no parent.
 
     # if no parent
-    if index <= 0:
-      return None
+    return None if index <= 0 else self.nodes[self._parent_index(index)][1]
   #--------------------------------------------------------------------------}}}
   def _parent_key(self, index): # {{{
     # Return the parent of the node at the given index. In the example above,
@@ -57,13 +57,37 @@ class Heap: # {{{1
     # python value of None if there is no parent.
 
     # if no parent
-    if index <= 0:
-      return None
+    return None if index <= 0 else ord(self.nodes[self._parent_index(index)][1] - 66)
+
+  def swap(self, ind1, ind2):
+    if (ind1 >= 0) and (ind2 >= 0):
+      temp_node = self.nodes[ind1]
+      self.nodes[ind1] = self.nodes[ind2]
+      self.nodes[ind2] = temp_node
+
+
+
+
   #--------------------------------------------------------------------------}}}
   def _heapify_up(self, index): # {{{
     # heapify_up, as discussed in class and the the book.
+   # if index > 0:
+    #  parent_ind = self._parent_index(index)
+    #  if self._key(index) < self._key(parent_ind):
+     #   self.swap(index,parent_ind)
+    #    self._heapify_up(parent_ind)
+    pdb.set_trace()
+    if index == 0:
+      return
+    parent_ind = self._parent_index(index)
+    while self._key(parent_ind) > self._key(index):
+      self.swap(index,parent_ind)
+      if self._parent(index) == None:
+          break
+      else:
+        parent_ind = self._parent_index(index)
+      
 
-    return # remove in your solution
   #---------------------------------------------------------------------------}}}
   def add(self, new_node):  # {{{
     # new_node is a tuple, new_node=(key,value)
