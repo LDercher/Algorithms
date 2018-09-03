@@ -76,23 +76,30 @@ class Heap: # {{{1
     #  if self._key(index) < self._key(parent_ind):
      #   self.swap(index,parent_ind)
     #    self._heapify_up(parent_ind)
-    pdb.set_trace()
+    #pdb.set_trace()
     if index == 0:
+      print "no swapping done on ", self.nodes
       return
     parent_ind = self._parent_index(index)
+    print "parent index at " ,index, " found to be ", parent_ind
     while self._key(parent_ind) > self._key(index):
+      print "parent key = ", self._key(parent_ind), "surr key = ", self._key(index)
+      print "swappoing at index ", index, " and ", parent_ind, " on ", self.nodes
       self.swap(index,parent_ind)
+      index = parent_ind
+      parent_ind = self._parent_index(index)
+      print "after swap ", self.nodes
       if self._parent(index) == None:
-          break
-      else:
-        parent_ind = self._parent_index(index)
+        print "parent index at ", index, " found to be null"
+        break
       
 
   #---------------------------------------------------------------------------}}}
   def add(self, new_node):  # {{{
     # new_node is a tuple, new_node=(key,value)
-
+    print "adding new node (", new_node[0], ", ", new_node[1], ")"
     self.nodes.append(new_node)
+    print "heapifying from index", len(self.nodes) - 1
     self._heapify_up(len(self.nodes)-1)
   #--------------------------------------------------------------------------}}}
 
@@ -191,7 +198,20 @@ I = [ (2,"b"),
       (3,"j"),
       (7,"k"),
       (11,"l")]
-H = Heap(initial=I)
+
+J = [ (45,"b"),
+      (15,"c"),
+      (16,"d"),
+      (345,"a"),
+      (17,"e"),
+      (1,"f"),
+      (20,"g"),
+      (15,"h"),
+      (14,"i"),
+      (36,"j"),
+      (47,"k"),
+      (11,"l")]
+H = Heap(initial=J)
 print "First run:"
 print H
 
