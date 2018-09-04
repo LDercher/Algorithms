@@ -247,5 +247,4 @@ def sort_with_PQ(L):  # {{{
 
 # you can test your sort_with_PQ function like this:
 R = [ randrange(20) for _ in range(15) ]
-print "*** rand and list = ", R
 print sort_with_PQ(R)
