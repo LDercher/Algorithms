@@ -41,7 +41,7 @@ class Heap: # {{{1
     # above, the index of node f is 5, so Heap._parent_index(5) = 2, the index
     # of the node c.
 
-    return None if index <= 0 else int(math.floor(index /2))
+    return None if index <= 0 else int(math.floor(index - 1 /2))
   #--------------------------------------------------------------------------}}}
   def _parent(self, index): # {{{
     # Return the parent of the node at the given index. In the example above,
@@ -76,22 +76,21 @@ class Heap: # {{{1
     #  if self._key(index) < self._key(parent_ind):
      #   self.swap(index,parent_ind)
     #    self._heapify_up(parent_ind)
-    pdb.set_trace()
+    #pdb.set_trace()
     if index == 0:
       return
     parent_ind = self._parent_index(index)
     while self._key(parent_ind) > self._key(index):
       self.swap(index,parent_ind)
-      if self._parent(index) == None:
-          break
-      else:
-        parent_ind = self._parent_index(index)
+      index = parent_ind
+      parent_ind = self._parent_index(index)
+      if parent_ind == None:
+        break
       
 
   #---------------------------------------------------------------------------}}}
   def add(self, new_node):  # {{{
     # new_node is a tuple, new_node=(key,value)
-
     self.nodes.append(new_node)
     self._heapify_up(len(self.nodes)-1)
   #--------------------------------------------------------------------------}}}
@@ -158,8 +157,7 @@ class PQ: # {{{1
   def add(self, new_node):  # {{{
     # Add new_node to the priority queue. The argument new_node is a tuple,
     # new_node=(key,value)
-
-    return  # remove in your solution
+    self.elements.add(new_node)
   #--------------------------------------------------------------------------}}}
 
   def pop(self): # {{{
@@ -167,8 +165,15 @@ class PQ: # {{{1
     # top is (k,v), it should return v. Raise an exception if the queue is
     # empty.
 
-    # if the queue is empty
-    raise IndexError
+    if not self.elements.nodes:
+      raise IndexError
+    if len(self.elements.nodes) > 1:
+      self.elements.nodes[0] = self.elements.nodes[len(self.elements.nodes) - 1]
+      del self.elements.nodes[-1]
+      self.elements._heapify_down(0)
+    return self.elements.nodes[0][1]
+
+
   #--------------------------------------------------------------------------}}}
 
   def __len__(self):  # {{{
@@ -191,7 +196,20 @@ I = [ (2,"b"),
       (3,"j"),
       (7,"k"),
       (11,"l")]
-H = Heap(initial=I)
+
+J = [ (45,"b"),
+      (15,"c"),
+      (16,"d"),
+      (345,"a"),
+      (17,"e"),
+      (1,"f"),
+      (20,"g"),
+      (15,"h"),
+      (14,"i"),
+      (36,"j"),
+      (47,"k"),
+      (11,"l")]
+H = Heap(initial=J)
 print "First run:"
 print H
 
@@ -214,11 +232,19 @@ print H
 def sort_with_PQ(L):  # {{{
   # Input is a list L. Return the sorted list. The sort should be linear in the
   # PQ operations. That is, it should run in O(n*O(PQ)).
+  peequ = PQ()
+  sorted_list = []
+  for i in L:
+    new_node = (i,"a")
+    peequ.add(new_node)
 
-  return  # remove in your solution
+  for i in range(0,(len(L)-1)):
+    sorted_list.append(peequ.elements.nodes[i][0])
+  
+
+  return  sorted_list
 #----------------------------------------------------------------------------}}}
 
 # you can test your sort_with_PQ function like this:
 R = [ randrange(20) for _ in range(15) ]
-print R
 print sort_with_PQ(R)
