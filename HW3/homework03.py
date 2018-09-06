@@ -60,7 +60,28 @@ class AdjList: # {{{1
   #--------------------------------------------------------------------------}}}
   def degree(self, s): # {{{
     # return the degree of the node s
-    return  # remove in your solution
+    deg = 0
+    elems = []
+    if(self.directed):
+      for i in range(len(self.adj) - 1):
+        for j in range(len(self.adj[i]) - 1):
+          if i == s:
+            deg += 1
+          if self.adj[i][j] == s:
+            deg += 1
+    else:
+      for i in range(len(self.adj[s] - 1)):
+        deg += 1
+        elems.append(self.adj[s][i])
+
+      for i in range (len(self.adj) - 1):
+        for j in range (len(self.adj[i]) - 1):
+          if i not in elems:
+            if self.adj[i][j] == s:
+              deg+=1
+
+
+    return  degree
   #--------------------------------------------------------------------------}}}
   def sort(self): # {{{
     # Sort the adjacency lists
@@ -126,5 +147,5 @@ def DFS(G,s): # {{{
 
   # if you need to make copies of an AdjList object A, use B = deepcopy(A).
 
-  return DFS_Tree
+  return s
 #----------------------------------------------------------------------------}}}
