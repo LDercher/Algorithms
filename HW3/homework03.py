@@ -69,8 +69,8 @@ class AdjList:  # {{{1
         deg = 0
         elems = []
         if(self.directed):
-            for i in range(len(self.nodes) - 1):
-                for j in range(len(self.adj[i]) - 1):
+            for i in range(len(self.nodes)):
+                for j in range(len(self.adj[i])):
                     if i == s:
                         deg += 1
                     if self.adj[i][j] == s:
@@ -179,21 +179,107 @@ def DFS(G, s):  # {{{
 # ----------------------------------------------------------------------------}}}
 
 
-E = [(0, 1), (0, 4), (1, 2), (1, 4), (1, 3)]
+E = [(0,1),(1,2),(1,3),(2,1),(3,1),(4,1),(4,0)]
 
 G = AdjList(5, edges=E)
 
 # for i in range( len(G.adj) - 1):
 # print "degree of node ", i, " = ", G.degree(i), "\n"
 
+print "created adj list"
+
+for i in range(len(G.adj)):
+  for j in G.adj[i]:
+    print "adj at node:", i, " = ",j
+
 print "degrees undirected"
 
-for i in range(len(G.adj) - 1):
+for i in range(len(G.adj)):
     print "deg ", i, " = ", G.degree(i)
+
+DFS_tree0 = DFS(G,0)
+
+print "DFS tree for node 0 in undirected G"
+
+for i in range(len(DFS_tree0)):
+  for j in DFS_tree0[i]:
+    print "DFS at node:", i, " = ",j
+
+DFS_tree1 = DFS(G,1)
+
+print "DFS tree for node 1 in undirected G"
+
+for i in range(len(DFS_tree1)):
+  for j in DFS_tree1[i]:
+    print "DFS at node:", i, " = ",j
+
+DFS_tree2 = DFS(G,2)
+
+print "DFS tree for node 2 in undirected G"
+
+for i in range(len(DFS_tree2)):
+  for j in DFS_tree2[i]:
+    print "DFS at node:", i, " = ",j
+
+DFS_tree3 = DFS(G,3)
+
+print "DFS tree for node 3 in undirected G"
+
+for i in range(len(DFS_tree3)):
+  for j in DFS_tree3[i]:
+    print "DFS at node:", i, " = ",j
+
+DFS_tree4 = DFS(G,4)
+
+print "DFS tree for node 4 in undirected G"
+
+for i in range(len(DFS_tree4)):
+  for j in DFS_tree4[i]:
+    print "DFS at node:", i, " = ",j
 
 G_dir = AdjList(5, edges=E, directed=True)
 
 print "degrees directed"
 
-for i in range(len(G_dir.adj) - 1):
+for i in range(len(G_dir.adj)):
     print "deg ", i, " = ", G_dir.degree(i)
+
+DFS_tree0 = DFS(G_dir,0)
+
+print "DFS tree for node 0 in directed G"
+
+for i in range(len(DFS_tree0)):
+  for j in DFS_tree0[i]:
+    print "DFS at node:", i, " = ",j
+
+DFS_tree1 = DFS(G_dir,1)
+
+print "DFS tree for node 1 in directed G"
+
+for i in range(len(DFS_tree1)):
+  for j in DFS_tree1[i]:
+    print "DFS at node:", i, " = ",j
+
+DFS_tree2 = DFS(G_dir,2)
+
+print "DFS tree for node 2 in directed G"
+
+for i in range(len(DFS_tree2)):
+  for j in DFS_tree2[i]:
+    print "DFS at node:", i, " = ",j
+
+DFS_tree3 = DFS(G_dir,3)
+
+print "DFS tree for node 3 in directed G"
+
+for i in range(len(DFS_tree3)):
+  for j in DFS_tree3[i]:
+    print "DFS at node:", i, " = ",j
+
+DFS_tree4 = DFS(G_dir,4)
+
+print "DFS tree for node 4 in directed G"
+
+for i in range(len(DFS_tree4)):
+  for j in DFS_tree4[i]:
+    print "DFS at node:", i, " = ",j
