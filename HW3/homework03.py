@@ -25,6 +25,7 @@ class AdjList: # {{{1
 
   def __init__(self, num_nodes, edges = [], directed = False): # {{{
     self.nodes = range(num_nodes)
+    print " num_nodes = ",num_nodes, " len nodes arr = ", len(self.nodes)
     self.adj = [ [] for _ in self.nodes ]
     self.directed = directed
 
@@ -37,7 +38,16 @@ class AdjList: # {{{1
   def add_edge(self, s, t, try_directed = True): # {{{
   # Adds an edge (s,t). If the graph is undirected, it adds edge (t,s) as well.
     if t not in self.adj[s]:
+      print "adding ", t, " at ", s 
       self.adj[s].append(t)
+      #print self.adj[s][t]
+
+    print "edge (", s, t, ") added to ind ", s, " length of arr at ", s, " = ", len(self.adj[s]) 
+
+    #for j in range(len(self.adj) - 1):
+      #  for i in range(len(self.adj[j]) - 1):
+       #     print "printing ind [",j,i,"]"
+        #    print self.adj[j][i]
 
     if not self.directed and try_directed:
       self.add_edge(t, s, try_directed = False)
@@ -60,19 +70,27 @@ class AdjList: # {{{1
   #--------------------------------------------------------------------------}}}
   def degree(self, s): # {{{
     # return the degree of the node s
+    if s > len(self.nodes) - 1:
+      return -1
+
     deg = 0
     elems = []
     if(self.directed):
-      for i in range(len(self.adj) - 1):
+      for i in range(len(self.nodes) - 1):
         for j in range(len(self.adj[i]) - 1):
           if i == s:
             deg += 1
           if self.adj[i][j] == s:
             deg += 1
     else:
-      for i in range(len(self.adj[s] - 1)):
+      for i in range(len(self.adj[s]) - 1):
+        print i
         deg += 1
         elems.append(self.adj[s][i])
+
+        print "length of adj at ", s," = ", len(self.adj[s])
+
+        print "deg of ",s, " set to ", deg, " after adding up elems in s arr"
 
       for i in range (len(self.adj) - 1):
         for j in range (len(self.adj[i]) - 1):
@@ -81,7 +99,7 @@ class AdjList: # {{{1
               deg+=1
 
 
-    return  degree
+    return  deg
   #--------------------------------------------------------------------------}}}
   def sort(self): # {{{
     # Sort the adjacency lists
@@ -149,3 +167,13 @@ def DFS(G,s): # {{{
 
   return s
 #----------------------------------------------------------------------------}}}
+
+
+E = [(0,1),(0,4),(1,2),(1,4),(1,3)]
+
+G = AdjList(5,edges = E)
+
+#for i in range( len(G.adj) - 1):
+ # print "degree of node ", i, " = ", G.degree(i), "\n"
+print "deg of node 0 = ", G.degree(0)
+
