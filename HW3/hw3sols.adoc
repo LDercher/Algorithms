@@ -1,4 +1,38 @@
 HW 3 textbook solutions
 ===========
-Author:    Luke Dercher.
+Author:    Luke Dercher
 Email:     luke.dercher@gmail.com
+===========
+
+.3.2.
+--------------------
+Find alg to detect a cycle in a graph. Return cycle
+
+-Assume the graph is connected or choose a connected component of the graph
+ - take arbirary node n as the vertex
+ - perform DFS on n
+ - if at any point an edge from a node to a seen vertex is encountered then there is a cycle
+ - get the cycle by tracing back through the path to the seen node
+ - return the cycle
+--------------------
+ 
+ 
+.3.4.
+--------------------
+detect if classification of butterfly species is consistent
+
+-Draw graph where where nodes represent butterflies, blue edge ands red edges connecting nodes representing same types of butterflies
+    - we have connected graph G = (V,E) and specied vertex u -> V
+    - perform DFS on u to get tree T which contains all nodes f G
+    - perform BFS on u to get equivalent tree T
+        -observe G = T
+--------------------
+
+
+.3.6.
+---------------------------------
+prove G = T
+
+- Suppose G has an edge e = {a,b} that does not belong to T
+
+
