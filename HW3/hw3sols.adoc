@@ -35,4 +35,12 @@ prove G = T
 
 - Suppose G has an edge e = {a,b} that does not belong to T
 
+---------------------------------
 
+
+.3.7.
+---------------------------------
+prove or disprove claim
+- Let G be a graph on n nodes, where n is an even number. If every mode of G has dgree at least n/2, then G is connected.
+
+---------------------------------
