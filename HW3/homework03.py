@@ -3,6 +3,7 @@ from __future__ import division
 from collections import deque
 from copy import deepcopy
 from random import randrange
+import pdb
 # ---------------------------------------------------------------------------}}}1
 
 
@@ -156,7 +157,7 @@ def BFS(G, s):  # {{{
 def DFS(G, s):  # {{{
     # G is an AdjList representation of a graph and s is a node in the graph.
     # Return the Depth First Search tree for G and s.
-
+    # pdb.set_trace()
     # if you need to make copies of an AdjList object A, use B = deepcopy(A).
     seen = [False for _ in G.nodes]
     explored = [False for _ in G.nodes]
@@ -167,7 +168,8 @@ def DFS(G, s):  # {{{
     while len(working_nodes) != 0:
           u = working_nodes.pop()
           if not explored[u]:
-            for v in G[u]:
+            explored[u] = True
+            for v in G.adj[u]:
                 if not explored[v]:
                   working_nodes.append(v)
                   if not seen[v]:
@@ -178,108 +180,39 @@ def DFS(G, s):  # {{{
     return DFS_Tree
 # ----------------------------------------------------------------------------}}}
 
+G = randgraph(10)
 
-E = [(0,1),(1,2),(1,3),(2,1),(3,1),(4,1),(4,0)]
+print "generated adj tree \n", G
 
-G = AdjList(5, edges=E)
-
-# for i in range( len(G.adj) - 1):
-# print "degree of node ", i, " = ", G.degree(i), "\n"
-
-print "created adj list"
+adj_ind2 = 0
+adj_ind1 = 0
 
 for i in range(len(G.adj)):
-  for j in G.adj[i]:
-    print "adj at node:", i, " = ",j
+  for j in range(len(G.adj[i])):
+    if i == G.adj[i][j]:
+      adj_ind1 = i
+      if adj_ind1 != G.adj[i][j]:
+        adj_ind2 = G.adj[i][j]
+        break
 
-print "degrees undirected"
 
-for i in range(len(G.adj)):
-    print "deg ", i, " = ", G.degree(i)
+print "adjacent indeces found to be ", adj_ind1, " and ", adj_ind2
 
-DFS_tree0 = DFS(G,0)
 
-print "DFS tree for node 0 in undirected G"
+BFS1, d = BFS(G,adj_ind1)
 
-for i in range(len(DFS_tree0)):
-  for j in DFS_tree0[i]:
-    print "DFS at node:", i, " = ",j
+BFS2, d = BFS(G,adj_ind2)
 
-DFS_tree1 = DFS(G,1)
+print "BFS at index ",adj_ind1, " = ", BFS1
 
-print "DFS tree for node 1 in undirected G"
+print "BFS at adjencent index ", adj_ind2, " = ", BFS2
 
-for i in range(len(DFS_tree1)):
-  for j in DFS_tree1[i]:
-    print "DFS at node:", i, " = ",j
 
-DFS_tree2 = DFS(G,2)
 
-print "DFS tree for node 2 in undirected G"
+DFS1 = DFS(G,adj_ind1)
 
-for i in range(len(DFS_tree2)):
-  for j in DFS_tree2[i]:
-    print "DFS at node:", i, " = ",j
+DFS2 = DFS(G,adj_ind2)
 
-DFS_tree3 = DFS(G,3)
+print "DFS at index ",adj_ind1, " = \n", DFS1
 
-print "DFS tree for node 3 in undirected G"
-
-for i in range(len(DFS_tree3)):
-  for j in DFS_tree3[i]:
-    print "DFS at node:", i, " = ",j
-
-DFS_tree4 = DFS(G,4)
-
-print "DFS tree for node 4 in undirected G"
-
-for i in range(len(DFS_tree4)):
-  for j in DFS_tree4[i]:
-    print "DFS at node:", i, " = ",j
-
-G_dir = AdjList(5, edges=E, directed=True)
-
-print "degrees directed"
-
-for i in range(len(G_dir.adj)):
-    print "deg ", i, " = ", G_dir.degree(i)
-
-DFS_tree0 = DFS(G_dir,0)
-
-print "DFS tree for node 0 in directed G"
-
-for i in range(len(DFS_tree0)):
-  for j in DFS_tree0[i]:
-    print "DFS at node:", i, " = ",j
-
-DFS_tree1 = DFS(G_dir,1)
-
-print "DFS tree for node 1 in directed G"
-
-for i in range(len(DFS_tree1)):
-  for j in DFS_tree1[i]:
-    print "DFS at node:", i, " = ",j
-
-DFS_tree2 = DFS(G_dir,2)
-
-print "DFS tree for node 2 in directed G"
-
-for i in range(len(DFS_tree2)):
-  for j in DFS_tree2[i]:
-    print "DFS at node:", i, " = ",j
-
-DFS_tree3 = DFS(G_dir,3)
-
-print "DFS tree for node 3 in directed G"
-
-for i in range(len(DFS_tree3)):
-  for j in DFS_tree3[i]:
-    print "DFS at node:", i, " = ",j
-
-DFS_tree4 = DFS(G_dir,4)
-
-print "DFS tree for node 4 in directed G"
-
-for i in range(len(DFS_tree4)):
-  for j in DFS_tree4[i]:
-    print "DFS at node:", i, " = ",j
+print "DFS at adjencent index ", adj_ind2, " = \n", DFS2
