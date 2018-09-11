@@ -182,7 +182,7 @@ def DFS(G, s):  # {{{
 
 G = randgraph(10)
 
-print "generated adj tree \n", G
+print "2.1 randgraph w/ 10 node generated adj tree \n", G
 
 adj_ind2 = 0
 adj_ind1 = 0
@@ -196,7 +196,7 @@ for i in range(len(G.adj)):
         break
 
 
-print "adjacent indeces found to be ", adj_ind1, " and ", adj_ind2
+print "2.3  adjacent indeces found to be ", adj_ind1, " and ", adj_ind2
 
 
 BFS1, d = BFS(G,adj_ind1)

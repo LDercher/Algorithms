@@ -1,0 +1,54 @@
+2.1 randgraph w/ 10 node generated adj tree 
+0: 2 4 7
+1: 8 9
+2: 0
+3: 
+4: 0 7 8
+5: 6
+6: 5 7
+7: 0 4 6 8 9
+8: 1 4 7 8
+9: 1 7
+2.3  adjacent indeces found to be  8  and  0
+BFS at index  8  =  0: 2
+1: 9
+2: 
+3: 
+4: 0
+5: 
+6: 5
+7: 6
+8: 1 4 7
+9: 
+BFS at adjencent index  0  =  0: 2 4 7
+1: 
+2: 
+3: 
+4: 8
+5: 
+6: 5
+7: 6 9
+8: 1
+9: 
+DFS at index  8  = 
+0: 
+1: 
+2: 
+3: 
+4: 
+5: 
+6: 
+7: 
+8: 1 4 7
+9: 
+DFS at adjencent index  0  = 
+0: 2 4 7
+1: 
+2: 
+3: 
+4: 
+5: 
+6: 
+7: 
+8: 
+9: 
