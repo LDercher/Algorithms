@@ -1,0 +1,10 @@
+    def findA(L):
+      for i in range(len(L)):
+        left = i-1
+        right = i+1
+        if i == 0:
+          left = i
+        if i == len(L)-1:
+          right = i
+        if L[left] <= L[i] >= L[right]:
+          return L[i]

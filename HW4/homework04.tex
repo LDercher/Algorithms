@@ -72,42 +72,31 @@
 }
 
 % document specific stuff
+\usepackage[final]{minted}
+\usemintedstyle{pastie}
+\renewcommand{\O}{\mathcal{O}}
 %----------------------------------------------------------------------------}}}1
 
 \begin{document}  % \printanswers
 % title header {{{
-\title{Fundamentals of Computer Algorithms \\ Homework 3 Additional Problems}
+\title{Fundamentals of Computer Algorithms \\ Homework 4 Additional Problems}
 \author{Prof. Matthew Moore}
-\date{Due: 2018-09-11}
+\date{Due: 2018-09-18}
 \maketitle
 %----------------------------------------------------------------------------}}}
 \begin{questions}
-% python   {{{1
-% ID: Ochieng1
-\question Implement the class method \verb|AdjList.degree|. In your homework
-submission, include only the function \verb|Adjlist.degree|.
+% graph algorithms cycles {{{1
+% ID: Aekizo1O
+\question Implement the function \verb|findCycle| in the attached python
+source file. In your homework submission, only submit your function, not the
+whole source file. Your function should find \emph{one} cycle, if it exists.
+It does not need to find the shortest cycle.
 %----------------------------------------------------------------------------}}}1
-% python, BFS   {{{1
-% ID: Ahng7rah
-\question Use the function \texttt{randgraph} in the attached python file to
-generate a graph with 10 nodes. Call this graph $\m{G}$.
-\begin{parts}
-  \part Write down the adjacency list of $\m{G}$. If
-    \verb|A=randgraph(...)|, you can just execute \verb|print A|.
-  \part Draw $\m{G}$.
-  \part Pick two distinct points $s,t$ in a connected component of $\m{G}$.
-    Use the \verb|BFS| function to generate the BFS tree for each of the two
-    points. Draw these two trees. The function \verb|BFS(...)| returns two
-    values -- \verb|BFS_Tree| and \verb|dist|. You can do 
-    \verb|B, d = BFS(...)| to get just the \verb|BFS_Tree| return value.
-\end{parts}
-%----------------------------------------------------------------------------}}}1
-% python, DFS   {{{1
-% ID: ma7EiSho
-\question Implement the function \verb|DFS| in the attached python file. In
-your homework submission, include only the function \verb|DFS|. Repeat the
-previous problem, but using DFS instead.
+
+% graph algorithms DFS  {{{1
+% ID: Vaip8ahj
+\question Let us suppose that $\m{G}$ is a directed graph and the vertex
+$s\in G$ has $\text{in-deg}(s) \neq 0$ and $\text{out-deg}(s)\neq 0$. Is it
+possible for the DFS tree for $s$ to contain \emph{only} $s$?
 %----------------------------------------------------------------------------}}}1
 \end{questions} \end{document}
-
-
