@@ -21,7 +21,7 @@ Find alg to detect a cycle in a graph. Return cycle
 --------------------
 detect if classification of butterfly species is consistent
 
--Draw graph where where nodes represent butterflies, blue edge ands red edges connecting nodes representing same types of butterflies
+-Draw graph where where nodes represent butterflies, blue edge ands red edges connecting nodes representing different types of butterflies
     - we have connected graph G = (V,E) and specied vertex u -> V
     - perform DFS on u to get tree T which contains all nodes f G
     - perform BFS on u to get equivalent tree T
@@ -32,8 +32,15 @@ detect if classification of butterfly species is consistent
 .3.6.
 ---------------------------------
 prove G = T
-
+T = BFSTree(G,u) = DFSTree(G, u)
+- Assume G = T
 - Suppose G has an edge e = {a,b} that does not belong to T
+    - if e is not in T then it b was either
+        - Visited through a path from an earlier concentric sweep of the nodes in the BFS
+        - Visited along another DFS search path in the DFS case
+    
+- observe in the DFS tree and BFS from node u in G, there is a possibility to miss different edges in BFS and DFS
+- The only way to avoid this is to have T contain all edges in G
 
 ---------------------------------
 
@@ -42,5 +49,13 @@ prove G = T
 ---------------------------------
 prove or disprove claim
 - Let G be a graph on n nodes, where n is an even number. If every mode of G has dgree at least n/2, then G is connected.
+
+-Assume G is not connected.
+    - number of edges in graph with nodes n div by 2 u + v = n  is at most
+        - (u - 1)(u -2) / 2 + (v - 1)(v - 2) /2 edges
+        - or n^2 - 2u(n - u) - (3n-4) / 2 edges
+    - because 1 < u < n which is smaller than n^2/2
+    - if every vertex has a degree of at least n/2 then the number of edges must be at least n^2/2
+    - Therefore there must be a node with a degree less than n/2
 
 ---------------------------------
