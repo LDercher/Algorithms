@@ -138,7 +138,9 @@ def predecessors(BFS_Tree, u, stop_at=None): # {{{
   preds = [u]
   parent = u
   while len(BFS_Tree.rev[parent]) != 0 and parent != stop_at:
+    print "len of BFS_tree rev at parent ", len(BFS_Tree.rev[parent])
     parent = BFS_Tree.rev[parent][0]
+    print "parent set to ", parent
     preds.append(parent)
   return preds
 #----------------------------------------------------------------------------}}}
@@ -181,33 +183,42 @@ def findCycle(G): # {{{
 
   # You may want to base your algorithm on the BFS function above, and I suggest
   # using the functions predecessors and common_ancestor_paths.
+  # Mark all the vertices as not visited
+        visited =[False]*(len(G.nodes))
+        cyc = []
+        # Call the recursive helper function to detect cycle in different
+        #DFS trees
+        for i in range(len(G.nodes)):
+            if visited[i] ==False: #Don't recur for u if it is already visited
+              isCyclicUtil(G,i,visited,-1,cyc)
 
-  for v in range(len(G)):
-    cyc = findCycleHelper(G,v)
-    if cyc != None:
-      return cyc
+        if cyc != []:
+          cyc.pop()        
+          return cyc
+        else:
+          return None
 
-  return None
+ 
 #----------------------------------------------------------------------------}}}
 
-def findCycleHelper(G,s):
-  seen = [ False for _ in G.nodes ]
-
-  seen[s] = True
-  BFS_Tree = AdjList(len(G), directed=True)
-  working_nodes = deque([s])
-  while len(working_nodes) != 0:
-    u = working_nodes.popleft()
-    for v in G[u]:
-      if v == s:
-        return BFS_Tree
-      if not seen[v]:
-        BFS_Tree.add_edge(u,v)
-        seen[v] = True
-        working_nodes.append(v)
-      
-
-  return None
+def isCyclicUtil(G,v,visited,parent,cyc):
+ 
+        #Mark the current node as visited 
+        visited[v]= True
+        #Recur for all the vertices adjacent to this vertex
+        for i in G.adj[v]:
+            # If the node is not visited then recurse on it
+            if  visited[i]==False : 
+                if(isCyclicUtil(G,i,visited,v,cyc)):
+                    cyc.append(i)
+                    return cyc
+            # If an adjacent vertex is visited and not parent of current vertex,
+            # then there is a cycle
+            elif  parent!=i:
+                cyc.append(i)
+                return cyc
+         
+        return None
 
 def randgraph(num_nodes):  # {{{
   phi = (1 + 5**0.5)/2
@@ -224,7 +235,13 @@ def randgraph(num_nodes):  # {{{
 
 # You can check your findCycle implementation by running this several times and
 # checking the output:
-A = randgraph(randrange(25))
+# A = randgraph(randrange(25))
+A = AdjList(5)
+A.add_edge(0,1)
+A.add_edge(0,2)
+A.add_edge(2,3)
+A.add_edge(2,4)
+A.add_edge(3,4)
 print A
 C = findCycle(A)
 print C
