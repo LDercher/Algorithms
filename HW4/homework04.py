@@ -2,6 +2,8 @@
 from __future__ import division
 from copy import deepcopy
 from random import randrange
+from collections import deque
+
 from sys import *
 #---------------------------------------------------------------------------}}}1
 class AdjList: # {{{1
@@ -82,7 +84,7 @@ class AdjList: # {{{1
 
   def reverse(self): # {{{
     # returns reverse graph
-    rev_adjlist = AdjList(self.numnodes, directed = self.directed)
+    rev_adjlist = AdjList(self.nodes, directed = self.directed)
     rev_adjlist.adj = deepcopy(self.adj)
     rev_adjlist.rev = deepcopy(self.rev)
 
@@ -180,8 +182,32 @@ def findCycle(G): # {{{
   # You may want to base your algorithm on the BFS function above, and I suggest
   # using the functions predecessors and common_ancestor_paths.
 
-  return None   # no cycle found
+  for v in range(len(G)):
+    cyc = findCycleHelper(G,v)
+    if cyc != None:
+      return cyc
+
+  return None
 #----------------------------------------------------------------------------}}}
+
+def findCycleHelper(G,s):
+  seen = [ False for _ in G.nodes ]
+
+  seen[s] = True
+  BFS_Tree = AdjList(len(G), directed=True)
+  working_nodes = deque([s])
+  while len(working_nodes) != 0:
+    u = working_nodes.popleft()
+    for v in G[u]:
+      if v == s:
+        return BFS_Tree
+      if not seen[v]:
+        BFS_Tree.add_edge(u,v)
+        seen[v] = True
+        working_nodes.append(v)
+      
+
+  return None
 
 def randgraph(num_nodes):  # {{{
   phi = (1 + 5**0.5)/2

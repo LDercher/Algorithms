@@ -1,0 +1,48 @@
+HW 4 textbook solutions
+===========
+Author:    Luke Dercher
+Email:     luke.dercher@gmail.com
+===========
+
+.3.1.
+--------------------
+Consider the directed acyclic graph G in Figure 3.10. How many topological orderings does it have?
+
+- We know that node a must come first since it has no edges coming into it, and that f must be the last since it has no edges leaving it.
+- We also know d must come before e, and b must come before c
+- This leaves us with the following possible orderings
+    - {a,b,c,d,e,f}
+    - {a,d,e,b,c,f}
+    - {a,b,d,c,e,f}
+    - {a,d,b,c,e,f}
+    - {a,b,d,e,c,f}
+    - {a,d,b,e,c,f}
+--------------------
+ 
+ 
+.3.3.
+--------------------
+Modify algorithm for computing topological ordering of a DAG to returns either: 
+    - The topological ordering
+    - a cycle if the graph is not a DAG
+
+    - maintian list output list L
+    - for each node v in G
+        - if a node v w/ no incoming edges exists
+            - Delete v from G
+                - Recursively compute topological ordering of G - {v}
+                    - append v to L
+        - else, a cycle exists
+            - take all possible paths from v until v is reached again. 
+--------------------
+
+
+
+.3.3.9
+--------------------
+Suppose that an n-node undirected graph G = (V,E) contains two nodes s and t s.t. the distance between the two nodes is strictly great than n/2. Show that there must exist a node v in between s and t s.t. deleting it would destroy all s to t paths. Give an algorithm with runtime O(m + n) to find node v
+
+- Use BFS starting from node s until t is reached
+
+--------------------
+
