@@ -38,11 +38,32 @@ Modify algorithm for computing topological ordering of a DAG to returns either:
 
 
 
-.3.3.9
+.3.9.
 --------------------
 Suppose that an n-node undirected graph G = (V,E) contains two nodes s and t s.t. the distance between the two nodes is strictly great than n/2. Show that there must exist a node v in between s and t s.t. deleting it would destroy all s to t paths. Give an algorithm with runtime O(m + n) to find node v
 
 - Use BFS starting from node s until t is reached
+
+findV(G,s)
+    discovered[for all nodes] = False
+    discovered[s] = True
+    queue = [s]
+    loop_exit = 0 #loop count var
+    distance = 0 #distance between s and t
+    while loop_exit < len(G.nodes):
+    for i in G.adj:
+        for j in G.adj:
+        discovered[j] = True
+        loop_exit++
+        queue[loop_exit] = j
+        count++
+
+    if (len(G.nodes)/2 >= count >= (len(G.nodes) + 1) /2):
+        print "there exists a node v which when removed the graph will become disconnected"
+        return True
+    else:
+        print "there doesn't exist a node v which when removed the graph will become disconnected"
+        return False
 
 --------------------
 
