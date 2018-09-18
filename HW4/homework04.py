@@ -184,16 +184,16 @@ def findCycle(G): # {{{
   # You may want to base your algorithm on the BFS function above, and I suggest
   # using the functions predecessors and common_ancestor_paths.
   # Mark all the vertices as not visited
-        visited =[False]*(len(G.nodes))
+        seen =[False]*(len(G.nodes))
         cyc = []
         # Call the recursive helper function to detect cycle in different
         #DFS trees
         for i in range(len(G.nodes)):
-            if visited[i] ==False: #Don't recur for u if it is already visited
-              isCyclicUtil(G,i,visited,-1,cyc)
+            if seen[i] ==False:
+              isCyclic(G,i,seen,-1,cyc)
 
         if cyc != []:
-          cyc.pop()        
+          cyc.pop() #helper function added node where cycle began twice. Popped to remove       
           return cyc
         else:
           return None
@@ -201,19 +201,18 @@ def findCycle(G): # {{{
  
 #----------------------------------------------------------------------------}}}
 
-def isCyclicUtil(G,v,visited,parent,cyc):
+def isCyclic(G,v,seen,parent,cyc):
  
-        #Mark the current node as visited 
-        visited[v]= True
+        #Mark the current node as seen
+        seen[v]= True
         #Recur for all the vertices adjacent to this vertex
         for i in G.adj[v]:
-            # If the node is not visited then recurse on it
-            if  visited[i]==False : 
-                if(isCyclicUtil(G,i,visited,v,cyc)):
+            # If the node is not seen then recurse on it
+            if  seen[i]==False : 
+                if(isCyclic(G,i,seen,v,cyc)):
                     cyc.append(i)
                     return cyc
-            # If an adjacent vertex is visited and not parent of current vertex,
-            # then there is a cycle
+            # If an adjacent vertex is seen and not the parent of the current index then there is a cycle
             elif  parent!=i:
                 cyc.append(i)
                 return cyc
