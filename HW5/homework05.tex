@@ -1,0 +1,150 @@
+\documentclass{exam} % {{{1
+\usepackage{amsmath, amssymb, amsthm, enumitem, float, caption, mathtools, tikz}
+\usetikzlibrary{arrows, calc, decorations.markings, matrix, positioning}
+\tikzset{>=latex}
+\usepackage[final]{hyperref}
+
+% mathbb and mathcal symbols
+\newcommand{\NN}{\mathbb{N}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\m}[1]{\mathbb{#1}}    % for models
+\newcommand{\cl}[1]{\mathcal{#1}}  % for classes
+
+% theorems and similar environments
+\theoremstyle{plain} 
+  \newtheorem{thm}{Theorem}[section]  \newtheorem*{thm*}{Theorem}
+  \newtheorem{claim}{Claim}[thm]      \newtheorem*{claim*}{Claim}
+  \newtheorem{conj}{Conjecture}[thm]  \newtheorem*{conj*}{Conjecture}
+  \newtheorem{cor}{Corollary}[thm]    \newtheorem*{cor*}{Corollary}
+  \newtheorem{lem}{Lemma}[thm]        \newtheorem*{lem*}{Lemma}
+  \newtheorem{prop}{Proposition}[thm] \newtheorem*{prop*}{Proposition}
+\theoremstyle{definition}
+  \newtheorem{defn}{Definition}[thm] \newtheorem*{defn*}{Definition}
+\theoremstyle{remark}
+  \newtheorem{rk}{Remark}[thm]  \newtheorem*{rk*}{Remark}
+  \newtheorem{ex}{Example}[thm] \newtheorem*{ex*}{Example}
+\newcommand{\Case}[1]{\smallskip \textbf{Case #1:}}
+\newenvironment{claimproof} {
+  \begin{proof}[Proof of claim]
+  \renewcommand{\qedsymbol}{\ensuremath{\bullet}}
+  } {
+  \end{proof}
+  }
+
+% custom commands
+\DeclareMathOperator{\Cg}{Cg}
+\DeclareMathOperator{\Clo}{Clo}
+\DeclareMathOperator{\Con}{Con}
+\DeclareMathOperator{\Rel}{Rel}
+\DeclareMathOperator{\Sg}{Sg}
+\DeclareMathOperator{\diag}{diag}
+\newcommand{\bmat}[1]{\ensuremath{ \begin{bmatrix} #1 \end{bmatrix} }}
+\newcommand{\Bmat}[1]{\ensuremath{ \begin{Bmatrix} #1 \end{Bmatrix} }}
+\newcommand{\pmat}[1]{\ensuremath{ \begin{pmatrix} #1 \end{pmatrix} }}
+\newcommand{\ds}[1]{\ensuremath{ \displaystyle{#1} }}
+\newcommand{\stack}[2]{\genfrac{}{}{0pt}{}{#1}{#2}}
+
+% misc
+\pagestyle{foot} \cfoot{Page \thepage\ of \numpages}  % page numbering
+\numberwithin{equation}{section}  % number equations within sections
+\renewcommand{\d}{\;d}
+\renewcommand{\epsilon}{\varepsilon}
+\renewcommand{\phi}{\varphi}
+
+% exam documentclass settings
+% restyle parts and subparts
+\renewcommand{\thepartno}{\roman{partno}}
+\renewcommand{\thesubpart}{\alph{subpart}}
+\renewcommand{\subpartlabel}{(\thesubpart)}
+\renewcommand{\subsubpartlabel}{(\thesubsubpart)}
+% restyle multiple choice options
+\renewcommand{\choicelabel}{\thechoice)}
+% true or false questions (use \TFQuestion)
+\newcommand{\TrueFalse}{\hspace*{0.25em}\textbf{True}\hspace*{1.25em}\textbf{False}\hspace*{1em}}
+\newlength{\mylena} \newlength{\mylenb} \settowidth{\mylena}{\TrueFalse}
+\newcommand{\TFQuestion}[1]{
+  \setlength{\mylenb}{\linewidth} 
+  \addtolength{\mylenb}{-121.15pt}
+  \parbox[t]{\mylena}{\TrueFalse}\parbox[t]{\mylenb}{#1}
+}
+
+% document specific stuff
+\usepackage[final]{minted}
+\usemintedstyle{pastie}
+\renewcommand{\O}{\mathcal{O}}
+%----------------------------------------------------------------------------}}}1
+
+\begin{document}  % \printanswers
+% title header {{{
+\title{Fundamentals of Computer Algorithms \\ Homework 5 Additional Problems}
+\author{Prof. Matthew Moore}
+\date{Due: 2018-09-25}
+\maketitle
+%----------------------------------------------------------------------------}}}
+\begin{questions}
+% topological sort   {{{1
+% ID: shi8uYie
+\question \begin{parts}
+  \part Implement the function \verb|topological_sort| in the attached
+    python file. Your algorithm should be of \emph{linear} complexity in the
+    vertices and edges of the graph. Submit only your function in your
+    printed homework.
+  \part Use \verb|randgraph_DAG| to generate a random graph with 10
+    vertices. (This can take a \emph{long} time.) Draw this graph.
+  \part Run your \verb|topological_sort| function on your graph from the
+    previous part. Draw the resulting topologically sorted graph.
+\end{parts}
+%----------------------------------------------------------------------------}}}1
+% DAGs   {{{1
+% ID: Ichoo9aB
+\question \begin{parts}
+  \part Implement the function \verb|is_DAG| in the attached python file.
+    Your algorithm should be of linear complexity in the vertices and edges
+    of the graph. Submit only your function in your printed homework.
+  \part Explain why your algorithm works.
+\end{parts}
+%----------------------------------------------------------------------------}}}1
+% Hamiltonian paths   {{{1
+% ID: ees5iiPh
+\question \begin{parts}
+  \part Implement the function \verb|findHamiltonian_DAG| in the attached
+    python file. Your algorithm should be of \emph{linear} complexity in the
+    vertices and edges of the graph. Submit only your function in your
+    printed homework.
+  \part Use \verb|randgraph_DAGwithHam| to generate a random graph with 10
+    vertices. (This can take a \emph{very} long time.) Draw this graph.
+  \part Run your \verb|findHamiltonian_DAG| function on the graph from the
+    previous part and indicate the Hamiltonian path in your drawing.
+  \part Run your \verb|topological_sort| function on your graph from the
+    previous part. Draw the resulting topologically sorted graph.
+\end{parts}
+%----------------------------------------------------------------------------}}}1
+% interval scheduling   {{{1
+% ID: iepo6Ca5
+\question In the interval scheduling problem we always select the interval
+which finishes first and which is compatible with all previous selections.
+Suppose instead that we select the interval which \emph{starts last} and
+which is compatible with all previous selections.
+\begin{parts}
+  \part Write a pseudocode algorithm with complexity $\O(n\log n)$
+    implementing this strategy.
+  \part Does this algorithm always return an optimal solution? If it
+    doesn't, then provide a counterexample. If it does, then prove it.
+\end{parts}
+%----------------------------------------------------------------------------}}}1
+% interval scheduling   {{{1
+% ID: Pai6aeXa
+\question For each of the parts below, show by producing a counterexample
+that the method of selecting intervals does not produce an optimal solution
+to the interval scheduling problem.
+\begin{parts}
+  \part Select intervals with earliest starting time and compatible with all
+    previous selections.
+  \part Select intervals with the shortest duration and compatible with all
+    previous selections.
+\end{parts}
+%----------------------------------------------------------------------------}}}1
+\end{questions} \end{document}
