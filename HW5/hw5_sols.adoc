@@ -29,19 +29,25 @@ Prove that, for a given set of boxes with specified weights, the greedy
 algorithm currently in use actually minimizes the number of trucks that
 are needed. Your proof should follow the type of analysis we used for
 the Interval Scheduling Problem: it should establish the optimality of this
-greedy packing algorithm by identifying a measure under which it
+greedy packing algorithm by identifying a measure under which it "stays ahead" of all other solutions
 
--consider greedy algorithm sequenced by packages. Packages have a weight defined by w_i and an index 1,2,..,n. Set of packages {n - (num_packages_i * num_trucks)}  is on truck t_i
--t_i..t_n is a non-decreasing sequence.
--t_n = m meanse n trucks sent out m packages
--Assume there exists another, optimal, solution t_i' = m' < t_n = m
-- consider the optiaml solution that matches the greedy solution as long as possible.
--- for all i < k, t_i = t_i' and t_k != t_k'
----consider cases that 
------t_k = 1 + t_k'
-------This indicates the greedy solution switches trucks before the optimal solution but since t_i < t_i' by assumption, this is a contradition
------t_k' = 1 + t_k
-------
+* consider greedy algorithm sequenced by packages. Packages have a weight defined by w_i and an index 1,2,..,n. Set of packages {n - (num_packages_i * num_trucks)}  is on truck t_i
+* t_i..t_n is a non-decreasing sequence.
+* t_n = m meanse n trucks sent out m packages
+* Assume there exists another, optimal, solution t_n' = m' < t_n = m
+* consider the optimal solution that matches the greedy solution as long as possible.
+  * for all i < k, t_i = t_i' and t_k != t_k'
+   * consider cases that  t_k = 1 + t_k'
+   * This indicates the greedy solution switches trucks before the optimal solution but since t_i < t_i' by assumption, this is a contradition
+   * t_k' = 1 + t_k
+   * this indicates that the greedy solution switched to a new truck on it's last load before the optimal solution. 
+   * construct a new sequence of trucks s.t. t_i'' = t_i for i <=k, and t_k'' = t_i'for i > k
+   * Observe this is the same as the optimal solution except truckload k (the truckload for which the greedy solution is proposed to stop being optimal) has been moved from truck t_k' to t_k-1'
+   * however truck t_k' cannot be overpacked. It has the no more packages then it did in the greedy solution. 
+   * Hence t_i'' must be valid solution.
+        * if k = n then we may have decreased the number of trucks needed compared to the optimal solution. This is a contradiction of the assumption that t_i' is an optimal solution.
+        * if not then we have an optimal solution that matches t_i longer that t_i' does. Which is again a contradiction to our assumption of t_i' being optimal. 
+* Therefore the greedy solution is optimal.
 --------------------
  
  
@@ -69,6 +75,16 @@ at which to invoke status_check, subject to the requirement
 that status_check is invoked at least once during each sensitive
 process P.
 
+(a_sol)
+* sort sesitive processes by finish time into list I
+* take first element in I into schedule list S
+* insert status check 
+* for i in I
+    * if finish time of i < finish time of last scheduled element
+        * append i to S
+        * insert status check
+* return S
+
 (b) While you were designing your algorithm, the security consultants
 were engaging in a little back-of-the-envelope reasoning. “Suppose
 we can find a set of k sensitive processes with the property that no
@@ -86,7 +102,13 @@ other words, the kind of argument in the previous paragraph is really
 the only thing forcing you to need a lot of invocations of status_
 check.) Decide whether you think this claim is true or false, and give
 a proof or a counterexample.
---------------------
+
+(b sol) 
+* Assume there exists a k* s.t. k* > k(number of processes picked by greedy solution)
+    * consider case where k* = k + 1
+    * then it must be that the optimal solution has found a process that can occur after the kth process
+    * This is a contradiction since the greedy solution has chosen the process with the soonest finish time every time.
+-------------------- 
 
 
 
@@ -96,8 +118,18 @@ In the interval scheduling problem we always select the interval which finishes 
 with all previous selections. Suppose instead that we select the interval which starts last and which
 is compatible with all previous selections.
 (i) Write a pseudocode algorithm with complexity O(n log n) implementing this strategy.
+
+(i_sol)
+ * Sort tasks by in decremental order by start time into list I
+    * insert first element into schedule list L
+    * for i in I
+        * if task i has finish time less that the previous scheduled tasks start time
+            * append task to S 
 (ii) Does this algorithm always return an optimal solution? If it doesn’t, then provide a counterexample.
 If it does, then prove it.
+
+* Observe this algorithm is equivalent to the greedy solution except it is sorted backwards. 
+* Since the greedy solution is optimal, this one is as well.  
 
 
 --------------------
