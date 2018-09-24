@@ -194,25 +194,26 @@ def topological_sort(G):  # {{{
     seen = [False for _ in G.nodes]
     stack = []
     for i in range(len(G.adj)):
-      if not seen[i]:
-        top_sort_helper(G,i,seen,stack)
-    
+        if not seen[i]:
+            top_sort_helper(G, i, seen, stack)
+
     return stack
-    
-#------------------------------------------------}}}
+
+# ------------------------------------------------}}}
 
 
-#assumes is will get an apudated graph with a deg 0 node
-def top_sort_helper(G,v,seen,stack):
-  seen[v] = True
-  for i in G.adj[v]:
-    if not seen[i]:
-      top_sort_helper(G,i,seen,stack)
+# assumes is will get an apudated graph with a deg 0 node
+def top_sort_helper(G, v, seen, stack):
+    seen[v] = True
+    for i in G.adj[v]:
+        if not seen[i]:
+            top_sort_helper(G, i, seen, stack)
 
-  stack.insert(0,v)
+    stack.insert(0, v)
+
 
 def is_DAG(G):  # {{{
-    # Return true if G is a directed acyclic graph, and false otherwise.
+        # Return true if G is a directed acyclic graph, and false otherwise.
 
     if topological_sort(G) == []:
         return False
@@ -221,36 +222,62 @@ def is_DAG(G):  # {{{
 # ----------------------------------------------------------------------------}}}
 
 
+def adj_to_graph(G):
+
+
+  graph = [[0 for column in range(len(G.adj))]
+         for row in range(len(G.adj))]
+
+  for i in range(len(G.adj)):
+        for j in range(len(G.adj[i])):
+            graph[j][i] = 1
+
+  return graph
+
+def youShallNotPass(graph,curr_node,pos,path):
+  if graph[path[ pos - 1]][curr_node] == 0:
+    return True
+    print "you shall not pass in adj node case"
+  for v in path:
+    if v == curr_node:
+      print curr_node, " already in path"
+      return True
+
+
+  return False
+
+def hammyJr(graph,path,pos):
+  if pos == len(graph[0]):
+    if graph[path[pos-1]][path[0]] == 1:
+      return path
+    else:
+      print "first none"
+      return None
+
+  for i in range(1,len(graph[0])):
+    print "for loop in hammy jr = ", i
+    if (graph,i,pos,path):
+      print "path at pos = ", pos, " = ", i
+      path[pos] = i
+      print " path = ", path
+      if hammyJr(graph,path, pos + 1):
+        return path
+
+      path[pos] = -1
+  print "second none"
+  return None
+
 def findHamiltonian_DAG(G):  # {{{
     # If G is a DAG, then return a Hamiltonian path in G if it exists. This should
     # be a list of the vertices of G that form the path. If a path does not exist
     # or if G is not a DAG, then return None. The class AdjList has some new
     # methods that you might find useful.
-    seen = [False for _ in G.nodes]
-    explored = [False for _ in G.nodes]
-    s = find_in_deg_zero(G)
+    graph = adj_to_graph(G)
+    path = [-1]*len(G.adj)
+    path[0] = 0#find_in_deg_zero(G)
+    return hammyJr(graph,path,1)
 
-    if s == None:
-        return None
 
-    seen[s] = True
-    top_sort = [s]
-    working_nodes = [s]
-    while (len(working_nodes)) != 0:
-        u = working_nodes.pop()
-        if not explored[u]:
-            explored[u] = True
-            seen_any = False
-        for v in G.adj[u]:
-            if not explored[v]:
-                working_nodes.append(v)
-            if not seen[v]:
-                seen_any = True
-                top_sort.append(v)
-                seen[v] = True
-                explored[v] = True
-
-        return top_sort
 
 
 def randgraph_DAG(num_nodes):  # {{{
@@ -303,10 +330,10 @@ def randgraph_DAGwithHam(num_nodes):  # {{{
 
 
 # use this to check your topological_sort algorithm
-A = randgraph_DAG(10)
-S = topological_sort(A)
-print A
-print S
+#A = randgraph_DAG(10)
+#S = topological_sort(A)
+#print A
+#print S
 
 
 # use this to check your findHamiltonian_DAG algorithm

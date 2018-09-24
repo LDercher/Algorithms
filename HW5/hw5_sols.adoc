@@ -1,0 +1,104 @@
+HW 5 textbook solutions
+===========
+Author:    Luke Dercher
+Email:     luke.dercher@gmail.com
+===========
+
+.4.3.
+--------------------
+
+You are consulting for a trucking company that does a large amount of
+business shipping packages between New York and Boston. The volume is
+high enough that they have to send a number of trucks each day between
+the two locations. Trucks have a fixed limit W on the maximum amount
+of weight they are allowed to carry. Boxes arrive at the New York station
+one by one, and each package i has a weight w_i. The trucking station
+is quite small, so at most one truck can be at the station at any time.
+Company policy requires that boxes are shipped in the order they arrive;
+otherwise, a customer might get upset upon seeing a box that arrived
+after his make it to Boston faster. At the moment, the company is using
+a simple greedy algorithm for packing: they pack boxes in the order they
+arrive, and whenever the next box does not fit, they send the truck on its
+way.
+But they wonder if they might be using too many trucks, and they
+want your opinion on whether the situation can be improved. Here is
+how they are thinking. Maybe one could decrease the number of trucks
+needed by sometimes sending off a truck that was less full, and in this
+way allow the next few trucks to be better packed.
+Prove that, for a given set of boxes with specified weights, the greedy
+algorithm currently in use actually minimizes the number of trucks that
+are needed. Your proof should follow the type of analysis we used for
+the Interval Scheduling Problem: it should establish the optimality of this
+greedy packing algorithm by identifying a measure under which it
+
+-consider greedy algorithm sequenced by packages. Packages have a weight defined by w_i and an index 1,2,..,n. Set of packages {n - (num_packages_i * num_trucks)}  is on truck t_i
+-t_i..t_n is a non-decreasing sequence.
+-t_n = m meanse n trucks sent out m packages
+-Assume there exists another, optimal, solution t_i' = m' < t_n = m
+- consider the optiaml solution that matches the greedy solution as long as possible.
+-- for all i < k, t_i = t_i' and t_k != t_k'
+---consider cases that 
+-----t_k = 1 + t_k'
+------This indicates the greedy solution switches trucks before the optimal solution but since t_i < t_i' by assumption, this is a contradition
+-----t_k' = 1 + t_k
+------
+--------------------
+ 
+ 
+.4.14.
+--------------------
+
+You’re working with a group of security consultants who are helping to
+monitor a large computer system. There’s particular interest in keeping
+track of processes that are labeled “sensitive.” Each such process has a
+designated start time and finish time, and it runs continuously between
+these times; the consultants have a list of the planned start and finish
+times of all sensitive processes that will be run that day.
+As a simple first step, they’ve written a program called status_check
+that, when invoked, runs for a few seconds and records various pieces
+of logging information about all the sensitive processes running on the
+system at that moment. (We’ll model each invocation of status_check
+as lasting for only this single point in time.) What they’d like to do is to
+run status_check as few times as possible during the day, but enough
+that for each sensitive process P, status_check is invoked at least once
+during the execution of process P.
+
+(a) Give an efficient algorithm that, given the start and finish times of
+all the sensitive processes, finds as small a set of times as possible
+at which to invoke status_check, subject to the requirement
+that status_check is invoked at least once during each sensitive
+process P.
+
+(b) While you were designing your algorithm, the security consultants
+were engaging in a little back-of-the-envelope reasoning. “Suppose
+we can find a set of k sensitive processes with the property that no
+two are ever running at the same time. Then clearly your algorithm
+will need to invoke status_check at least k times: no one invocation
+of status_check can handle more than one of these processes.”
+This is true, of course, and after some further discussion, you all
+begin wondering whether something stronger is true as well, a kind
+of converse to the above argument. Suppose that k∗ is the largest
+value of k such that one can find a set of k sensitive processes with
+no two ever running at the same time. Is it the case that there must
+be a set of k∗ times at which you can run status_check so that some
+invocation occurs during the execution of each sensitive process? (In
+other words, the kind of argument in the previous paragraph is really
+the only thing forcing you to need a lot of invocations of status_
+check.) Decide whether you think this claim is true or false, and give
+a proof or a counterexample.
+--------------------
+
+
+
+.4ap.
+--------------------
+In the interval scheduling problem we always select the interval which finishes first and which is compatible
+with all previous selections. Suppose instead that we select the interval which starts last and which
+is compatible with all previous selections.
+(i) Write a pseudocode algorithm with complexity O(n log n) implementing this strategy.
+(ii) Does this algorithm always return an optimal solution? If it doesn’t, then provide a counterexample.
+If it does, then prove it.
+
+
+--------------------
+
