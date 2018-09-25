@@ -199,9 +199,12 @@ def topological_sort(G):  # {{{
         # vertices of G arranged in the topological order. Your algorithm should be
         # *linear* in (number of vertices + number of edges). The class AdjList has
         # some new methods that you might find useful.
+    # mark all nodes as not seen 
     seen = [False for _ in G.nodes]
+    #maintain a stack to places vertices in and preserve our order
     stack = []
     for i in range(len(G.adj)):
+        # call top sort helper on all unseen vertices
         if not seen[i]:
             top_sort_helper(G, i, seen, stack)
 
@@ -212,21 +215,24 @@ def topological_sort(G):  # {{{
 
 # assumes is will get an apudated graph with a deg 0 node
 def top_sort_helper(G, v, seen, stack):
+    # mark current node as seen
     seen[v] = True
+    #look at all adjacent nodes 
     for i in G.adj[v]:
+        # if adjacent node is not seen call helper recursively on it
         if not seen[i]:
             top_sort_helper(G, i, seen, stack)
-
+    # insert the seen node on the stack
     stack.insert(0, v)
 
 
 def is_DAG(G):  # {{{
-        # Return true if G is a directed acyclic graph, and false otherwise.
+        # by formula 3.2 in textbook, If G is a DAg then G has a topological ordering.
 
     if topological_sort(G) == []:
         return False
     else:
-        return True  # remove in your solution
+        return True 
 # ----------------------------------------------------------------------------}}}
 
 
@@ -239,54 +245,53 @@ def adj_to_graph(G):
   for i in range(len(G.adj)):
         for j in range(len(G.adj[i])):
             graph[i][G.adj[i][j]] = 1
-            #print "set ind ",i," ", j, " to one" 
 
   return graph
 
 def youShallNotPass(graph,curr_node,pos,path):
+    # check if adjacent vertex is an allowable path
   if graph[path[ pos - 1]][curr_node] == 0:
-    print "graph at ", path[ pos -1], " and ", curr_node, " = ", graph[path[ pos - 1]][curr_node]
     return True
+    # check if our vertex being tested is already in the path
   for v in path:
     if v == curr_node:
-      print curr_node, " already in path"
       return True
 
 
   return False
 
 def hammyJr(graph,path,pos):
+    # if last element in the path
   if pos == (len(graph[0]) - 1):
+      #if path connects back to begging of path, we have a ham path!
     if graph[path[pos-1]][path[0]] == 1:
       return True
     else:
-  #    print "first none"
       return False
 
   for i in range(1,len(graph[0])):
- #   print "for loop in hammy jr = ", i
+      # recursively try and check all vertices in range
     if not youShallNotPass(graph,i,pos,path):
-     # print "path at pos = ", pos, " = ", i
       path[pos] = i
       print " path = ", path
       if hammyJr(graph,path, pos + 1):
         return True
       path[pos] = -1
-      
-#  print "second none"
+
   return False
 
 def findHamiltonian_DAG(G):  # {{{
-    # If G is a DAG, then return a Hamiltonian path in G if it exists. This should
-    # be a list of the vertices of G that form the path. If a path does not exist
-    # or if G is not a DAG, then return None. The class AdjList has some new
-    # methods that you might find useful.
+    # turn adj list to graph first. For conveniance
     graph = adj_to_graph(G)
     path = []
+    # path = -1 to begin with  
     path = [-1]*len(G.adj)
+    # I assume the vertex with no outgoing edges will be the last
     path[len(path)-1] = find_out_deg_zero(G)
+    # try to start the path from every vertex
     for i in range(len(path)):
         path[0] = i
+        # call helper function on hypotheical path
         if hammyJr(graph,path,1):
             return path
     return []
@@ -328,7 +333,6 @@ def randgraph_DAGwithHam(num_nodes):  # {{{
     # choose a random path through the vertices and add those edges to G
     ham_path = next(islice(permutations(G.nodes, len(G)),
                            randrange(math.factorial(len(G))), None))
-    print "ham path is ", ham_path
     for i in range(1, len(ham_path)):
         (prev_node, cur_node) = (ham_path[i-1], ham_path[i])
         G.add_edge(prev_node, cur_node)
@@ -345,16 +349,24 @@ def randgraph_DAGwithHam(num_nodes):  # {{{
 
 
 # use this to check your topological_sort algorithm
-#A = randgraph_DAG(10)
-#S = topological_sort(A)
-#print A
-#print S
+A = randgraph_DAG(10)
+S = topological_sort(A)
+print "rand graph with DAG = "
+print A
+print "top sort on rand graph with DAG = "
+print S
 
 
 # use this to check your findHamiltonian_DAG algorithm
 A = randgraph_DAGwithHam(10)
 H = findHamiltonian_DAG(A)
+V = topological_sort(A)
+print "randgraph DAG w/ ham = "
 print A
+print "ham path on DAG w/ ham = "
 print H
+print "top sort on DAG w/ ham = "
+print V
+
 if not A.is_path(H):
     print "whoops!"
