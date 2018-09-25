@@ -185,6 +185,14 @@ def find_in_deg_zero(G):
 
     return None
 
+def find_out_deg_zero(G):
+    for i in range(len(G.adj)):
+        if G.out_degree(i) == 0:
+            return i
+
+    return None
+
+
 
 def topological_sort(G):  # {{{
         # Return a topological sort of G if it exists. This should be a list of the
@@ -230,14 +238,15 @@ def adj_to_graph(G):
 
   for i in range(len(G.adj)):
         for j in range(len(G.adj[i])):
-            graph[j][i] = 1
+            graph[i][G.adj[i][j]] = 1
+            #print "set ind ",i," ", j, " to one" 
 
   return graph
 
 def youShallNotPass(graph,curr_node,pos,path):
   if graph[path[ pos - 1]][curr_node] == 0:
+    print "graph at ", path[ pos -1], " and ", curr_node, " = ", graph[path[ pos - 1]][curr_node]
     return True
-    print "you shall not pass in adj node case"
   for v in path:
     if v == curr_node:
       print curr_node, " already in path"
@@ -247,25 +256,25 @@ def youShallNotPass(graph,curr_node,pos,path):
   return False
 
 def hammyJr(graph,path,pos):
-  if pos == len(graph[0]):
+  if pos == (len(graph[0]) - 1):
     if graph[path[pos-1]][path[0]] == 1:
-      return path
+      return True
     else:
-      print "first none"
-      return None
+  #    print "first none"
+      return False
 
   for i in range(1,len(graph[0])):
-    print "for loop in hammy jr = ", i
-    if (graph,i,pos,path):
-      print "path at pos = ", pos, " = ", i
+ #   print "for loop in hammy jr = ", i
+    if not youShallNotPass(graph,i,pos,path):
+     # print "path at pos = ", pos, " = ", i
       path[pos] = i
       print " path = ", path
       if hammyJr(graph,path, pos + 1):
-        return path
-
+        return True
       path[pos] = -1
-  print "second none"
-  return None
+      
+#  print "second none"
+  return False
 
 def findHamiltonian_DAG(G):  # {{{
     # If G is a DAG, then return a Hamiltonian path in G if it exists. This should
@@ -273,9 +282,14 @@ def findHamiltonian_DAG(G):  # {{{
     # or if G is not a DAG, then return None. The class AdjList has some new
     # methods that you might find useful.
     graph = adj_to_graph(G)
+    path = []
     path = [-1]*len(G.adj)
-    path[0] = 0#find_in_deg_zero(G)
-    return hammyJr(graph,path,1)
+    path[len(path)-1] = find_out_deg_zero(G)
+    for i in range(len(path)):
+        path[0] = i
+        if hammyJr(graph,path,1):
+            return path
+    return []
 
 
 
@@ -314,6 +328,7 @@ def randgraph_DAGwithHam(num_nodes):  # {{{
     # choose a random path through the vertices and add those edges to G
     ham_path = next(islice(permutations(G.nodes, len(G)),
                            randrange(math.factorial(len(G))), None))
+    print "ham path is ", ham_path
     for i in range(1, len(ham_path)):
         (prev_node, cur_node) = (ham_path[i-1], ham_path[i])
         G.add_edge(prev_node, cur_node)
