@@ -82,6 +82,8 @@ class AdjList: # {{{1
     if not self.directed and len(path) == 2:
       return False
 
+    #print "running is cycle on \n", path
+
     return self.is_path(list(path) + [path[0]])
 #----------------------------------------------------------------------------}}}
 
@@ -212,24 +214,58 @@ def check_part(I, P):  # {{{
     if depth(part) != 1:
       return False
   return True
+
+def filter_list(full_list, excludes):
+  s = set(excludes)
+  return (x for x in full_list if x not in s)
 #----------------------------------------------------------------------------}}}
 
 
-def findCycleDir(G):  # {{{
+def findCycleDirHelper(G):  # {{{
   # By modifying the topological sort algorithm, find a cycle in the directed
   # graph G. Your algorithm should be linear in the nodes and edges of G. If G
   # is acyclic, return None. If G has a cycle, say 
   #   a1 -> a2 -> ... -> ak -> a1,
   # then return the list [a1, a2, ..., ak]. Loops of the form a1 -> a1 count as
   # 1-cycles, and 2-cycles of the form a1 -> a2 -> a1 count as well.
+  S = []
+  in_degrees = [ G.in_degree(s) for s in G.nodes ]
+  in_degrees_0 = [ s for s in G.nodes if in_degrees[s] == 0 ]
+  while len(in_degrees_0) != 0:
+    v = in_degrees_0.pop()
+    S.append(v)
+    for u in G[v]:
+      in_degrees[u] -= 1
+      if in_degrees[u] == 0:
+        in_degrees_0.append(u)
+  return list(filter(lambda x: x not in set(S), G.nodes))
 
-  return None # if G is acyclic
+def findCycleDir(G):
+  non_top_sort = findCycleDirHelper(G)
+  out_degrees_0 = [ s for s in G.nodes if G.out_degree(s) == 0 or G.in_degree(s) == 0]
+  possible_cycle_list = list(filter(lambda x: x not in set(out_degrees_0), non_top_sort))
+
+
+  for i in range(0,len(possible_cycle_list) -1 ):
+    for j in range(i+1,len(possible_cycle_list) -1 ):
+      if G.is_cycle(possible_cycle_list[i:j]):
+        return possible_cycle_list[i:j]
+
+  return []
 #----------------------------------------------------------------------------}}}
 def getSecond(val): 
     return val[1]
 
 def getFirst(val): 
-    return val[0]    
+    return val[0]
+
+def isIntersecting((x,y),(a,b)):
+    if  x < a or y > a:
+      return True
+    if a < x or b > x:
+      return True
+    else:
+      return False    
 
 def interval_partitioning(I): # {{{
   # Solve the interval partioning problem for the list of intervals I. You
@@ -238,12 +274,21 @@ def interval_partitioning(I): # {{{
   # = [ (1,4), (2,6), (5,6), (1,6) ], your returned partition might be P = [
   # [(1,4), (5,6)], [(2,6)], [(1,6)] ], so intervals (1,4), (5,6) are labeled 0,
   # interval (2,6) is labeled 1, and (1,6) is labeled 2.
-  I.sort(key=getSecond)
-  sched = I.popleft()
-  for i in I:
-    if getFirst(i) >= getSecond(sched[sched.length -1]):
-      sched.append(i)
-
+  I.sort(key=getFirst)
+  sched = [[]]
+  start_ind = 0
+  new_label = False
+  for i in range(0, len(I)):
+    if new_label:
+      new_label = False
+      sched.append([])
+      start_ind += 1
+    sched[start_ind].append(I[i])
+    for j in range(0,len(I)-1):    
+      if not isIntersecting(I[i],I[j]):
+        sched[start_ind].append(I[j])
+      else:
+        new_label = True
 
   return sched   # delete in your solution
 #----------------------------------------------------------------------------}}}
@@ -258,23 +303,23 @@ def interval_partitioning(I): # {{{
 
 ## you can run this to be more certain that your findCycleDir function works in
 ## general
-#for _ in range(10**4):
+##for _ in range(10**4):
 #  A = randgraph(randrange(20), directed=True)
 #  C = findCycleDir(A)
 #  if C and ( not A.is_cycle(C) or is_DAG(A) ):
 #    print "whoops"
 #    print A
-#    print C
+#@    print C
 #    break
 
 
 ## check your interval_partitioning function by running this a couple times
-#I = rand_intervals(randrange(15))
-#P = interval_partitioning(I)
-#print I
-#for i,part in enumerate(P):
-#  print i, part
-#print check_part(I, P)
+I = rand_intervals(randrange(15))
+P = interval_partitioning(I)
+print I
+for i,part in enumerate(P):
+  print i, part
+print check_part(I, P)
 
 ## you can run this to be more certain that your interval_partitioning function
 ## works in general
