@@ -260,9 +260,7 @@ def getFirst(val):
     return val[0]
 
 def isIntersecting((x,y),(a,b)):
-    if  x < a or y > a:
-      return True
-    if a < x or b > x:
+    if  y > a:
       return True
     else:
       return False    
@@ -271,24 +269,34 @@ def interval_partitioning(I): # {{{
   # Solve the interval partioning problem for the list of intervals I. You
   # should return a partition of I in a certain format. If P is the partition,
   # then P[i] should be the list of intervals labeled with i. For example, if I
-  # = [ (1,4), (2,6), (5,6), (1,6) ], your returned partition might be P = [
-  # [(1,4), (5,6)], [(2,6)], [(1,6)] ], so intervals (1,4), (5,6) are labeled 0,
-  # interval (2,6) is labeled 1, and (1,6) is labeled 2.
+  # = [ (1,4), (2,6), (56)], [(1,6)] ], so intervals (1,4), (5,6) are labeled 0,
+  # interval (2,6) is labeled ,6), (1,6) ], your returned partition might be P = [
+  # [(1,4), (5,6)], [(2,1, and,6) is labeled 2.
   I.sort(key=getFirst)
   sched = [[]]
-  start_ind = 0
-  new_label = False
-  for i in range(0, len(I)):
+  for i in range(1,depth(I)):
+    sched.append([])
+  print sched
+  new_label = True
+  sched[0].append(I[0])
+  label = 0
+  for i in range(0, len(I)-1):
     if new_label:
+      sched[label].append(I.pop(0))
       new_label = False
-      sched.append([])
-      start_ind += 1
-    sched[start_ind].append(I[i])
-    for j in range(0,len(I)-1):    
-      if not isIntersecting(I[i],I[j]):
-        sched[start_ind].append(I[j])
+
+    for j in range(1,len(I)-1):
+      print "checking intersection of  ", I[i], " and ", I[j]
+      print "label = ", label, " len sched = ", len(sched), "sched at label = ", sched[label] 
+      if not isIntersecting(sched[label][len(sched[label])-1],I[j]):
+        print "not intersecting ", I[i], " and ", I[j]
+        print "attempting to add to sched w label ", label
+        sched[label].append(I.pop(0))
       else:
         new_label = True
+        label += 1
+        break
+        
 
   return sched   # delete in your solution
 #----------------------------------------------------------------------------}}}
@@ -315,8 +323,8 @@ def interval_partitioning(I): # {{{
 
 ## check your interval_partitioning function by running this a couple times
 I = rand_intervals(randrange(15))
-P = interval_partitioning(I)
 print I
+P = interval_partitioning(I)
 for i,part in enumerate(P):
   print i, part
 print check_part(I, P)
