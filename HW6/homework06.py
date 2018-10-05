@@ -273,32 +273,20 @@ def interval_partitioning(I): # {{{
   # interval (2,6) is labeled ,6), (1,6) ], your returned partition might be P = [
   # [(1,4), (5,6)], [(2,1, and,6) is labeled 2.
   I.sort(key=getFirst)
-  sched = [[]]
-  for i in range(1,depth(I)):
-    sched.append([])
-  print sched
-  new_label = True
-  sched[0].append(I[0])
-  label = 0
-  for i in range(0, len(I)-1):
-    if new_label:
-      sched[label].append(I.pop(0))
-      new_label = False
+  sched = []
+  label = [ -1 for _ in I]
+  for i in range(len(I)):
+    pos_labels = range(len(sched) + 1)
+    for j in range(i):
+      if isIntersecting(I[i],I[j]):
+        pos_labels.remove(label[j])
+    label[i] = min(pos_labels)
+    if label[i] > len(sched) - 1:
+      sched.append([I[i]])
+    else:
+      sched[label[i]].append(I[i])
 
-    for j in range(1,len(I)-1):
-      print "checking intersection of  ", I[i], " and ", I[j]
-      print "label = ", label, " len sched = ", len(sched), "sched at label = ", sched[label] 
-      if not isIntersecting(sched[label][len(sched[label])-1],I[j]):
-        print "not intersecting ", I[i], " and ", I[j]
-        print "attempting to add to sched w label ", label
-        sched[label].append(I.pop(0))
-      else:
-        new_label = True
-        label += 1
-        break
-        
-
-  return sched   # delete in your solution
+  return sched
 #----------------------------------------------------------------------------}}}
 
 
