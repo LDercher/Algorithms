@@ -1,0 +1,80 @@
+HW 7 textbook solutions
+===========
+Author:    Luke Dercher
+Email:     luke.dercher@gmail.com
+===========
+
+.ap1. 
+--------------------
+Let G be a directed graph. Prove or disprove: if every node n ∈ G has in-deg(n) > 0, then G has a
+cycle.
+--------------------
+ 
+ 
+
+
+
+
+
+
+
+.ap2.
+--------------------
+Let G be a graph. We say an edge (u, v) crosses the cut S if it has one edge in S and the other in G \ S.
+We say that an edge (u, v) is light for S if it has minimum weight amongst all the edges which cross S.
+Let
+M = { edges (u, v) | for some cut S, (u, v) is light}
+.
+Give a simple example of a connected graph G such that M does not form the edges of a minimum
+spanning tree.
+--------------------
+
+
+
+
+
+
+
+
+
+
+
+.ap3.
+--------------------
+3. Suppose that all the edge weights of G are positive and the G does not have any self-loops.
+(i) Prove that any subset of the edges which connects all vertices and has minimum total weight must
+be a tree.
+(ii) If we allow edge weights to also be negative, is the previous part still true? If it is, then prove it. If
+it isn’t then provide a counterexample.
+--------------------
+
+
+
+
+
+
+
+
+
+
+
+.4.2.
+--------------------
+T or F
+    (a) G is graph. T is MST on G. Sqaure weights of edges on G. Is T still a MST?
+
+    (b) let p be a shortest path on G. Square weights. Still shortest path?
+--------------------
+
+
+
+
+
+
+
+
+
+.4.18.
+--------------------
+Given edge e = (v,w), time = t, f_e(t) will return preticed arrival time at w. Design alg to minimize travel time. 
+--------------------
