@@ -3,7 +3,7 @@ from __future__ import division
 from collections import deque
 from heapq import heapify, heappush, heappop
 from random import randrange
-import math
+import sys
 # ---------------------------------------------------------------------------}}}1
 
 
@@ -284,29 +284,32 @@ def MST_Prim(G, w, s):  # {{{
   return M
 # ----------------------------------------------------------------------------}}}
 
+def minDist(path_wt, seen):
+  min_val = sys.maxint
+  min_index = 0
+  for i in range(len(seen)):
+    if (not seen[i]) and path_wt[i] <= min_val:
+      min_val = path_wt[i]
+      min_index = i
+  return min_index
+
 
 def Dijkstra(G, w, s):  # {{{
-  path_wt = [-1 for n in G.nodes]
+  path_wt = [sys.maxint for n in G.nodes]
+  seen = [ False for n in G.nodes]
   path_wt[s] = 0
-  seen = [s]
-  it = 0
-  while len(seen) != len(G.nodes):
-    it += 1
-    min_path = 999999
-    u = seen[-1]
-    for v in G[u]:
-      if v not in seen:
-        path_wtv = path_wt[v] + w[(u,v)]
-        if path_wtv < min_path:
-          min_path = path_wtv
-        seen.append(v)
-      path_wt[v] = min_path
-
-
-  return path_wt # delete in your solution
+  for i in range(len(G.nodes) + 1):
+    u = minDist(path_wt,seen)
+    seen[u] = True
+    for v in range(len(G.nodes)):
+      if (u,v) in w:
+        if (not seen[v]) and path_wt[u] + w[(u,v)] < path_wt[v]:
+          path_wt[v] = path_wt[u] + w[(u,v)]
+  return path_wt
+ 
 # ----------------------------------------------------------------------------}}}
 
-G, w = rand_weight_graph(5)
+G, w = rand_weight_graph(10)
 print G, "\n"
 print w, "\n"
 shortest_path_from_0 = Dijkstra(G,w,0)
