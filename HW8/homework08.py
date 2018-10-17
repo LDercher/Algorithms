@@ -285,7 +285,7 @@ def MST_Prim(G, w, s):  # {{{
 # ----------------------------------------------------------------------------}}}
 
 def minDist(path_wt, seen):
-  min_val = sys.maxint
+  min_val = float("inf")
   min_index = 0
   for i in range(len(seen)):
     if (not seen[i]) and path_wt[i] <= min_val:
@@ -295,7 +295,7 @@ def minDist(path_wt, seen):
 
 
 def Dijkstra(G, w, s):  # {{{
-  path_wt = [sys.maxint for n in G.nodes]
+  path_wt = [float("inf") for n in G.nodes]
   seen = [ False for n in G.nodes]
   path_wt[s] = 0
   for i in range(len(G.nodes) + 1):
