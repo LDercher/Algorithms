@@ -1,0 +1,81 @@
+HW 8 textbook solutions
+===========
+Author:    Luke Dercher
+Email:     luke.dercher@gmail.com
+===========
+
+.ap1.
+--------------------
+Use the function rand_weight_graph to generate a random weighted graph with 10 nodes. Use print G
+and print w to print the graph and the weight function.
+
+(i) Draw your graph.
+(ii) Pick a node s and trace a run of Dijkstra’s algorithm on your graph starting from node s. Trace
+the running of the algorithm by making a table showing, at each loop iteration, the state of the
+heap, what edges are being added to the tree, etc.
+(iii) Repeat the above part using Prim’s algorithm (use the same starting point s).
+(iv) Repeat the first part using Kruskal’s algorithm.
+--------------------
+ 
+ 
+.ap3.
+--------------------
+Let G = <G; E> be an undirected connected graph with weight function w : E → R such that
+• w(u, v) ≥ 0 for all edges (u, v) ∈ E,
+• all edges weights are the same (that is, w(u, v) = w(x, y) implies (u, v) = (x, y)).
+Recall from exercise 4.8 that the minimum spanning tree for such a graph and weight function is unique.
+Define the second best minimal spanning tree as follows. If T is the unique minimal spanning tree of G
+and S is another spanning tree such thatModify algorithm for computing topological ordering of a DAG to returns either: 
+    - The topological ordering
+    - a cycle if the graph is not a DAG
+
+    - maintian list output list L
+    - for each node v in G
+        - if a node v w/ no incoming edges exists
+            - Delete v from G
+                - Recursively compute topological ordering of G - {v}
+                    - append v to L
+        - else, a cycle exists
+            - take all possible paths from v until v is reached again. 
+w(S) = min {w(R) | R is a spanning tree of G and R (not)= T}
+
+,
+then we say that S is the second best minimal spanning tree of G.
+(i) Show by a counterexample that although the minimal spanning tree is unique in this situation, the
+second best minimal spanning tree need not be.
+(ii) Let T = <G; E_T> be the minimal spanning tree of G. Prove that G has edges (u, v) ∈ E_T and
+(x, y) (not)∈ E_T such that the tree S obtained from T by deleting edge (u, v) and adding edge (x, y) is a
+second best minimal spanning tree.
+(iii) Give an efficient algorithm to compute the second best minimal spanning tree.
+--------------------
+
+
+.4.8.
+--------------------
+Suppose you given a connected graph G, with edge costs that are all disticnt. Prove that G has a minimum spanning tree
+--------------------
+
+
+.4.11.
+--------------------
+Suppose you are given a connected graph G = (V, E), with a cost ce on
+each edge e. In an earlier problem, we saw that when all edge costs are
+distinct, G has a unique minimum spanning tree. However, G may have
+many minimum spanning trees when the edge costs are not all distinct.
+Here we formulate the question: Can Kruskal’s Algorithm be made to find
+all the minimum spanning trees of G?
+Recall that Kruskal’s Algorithm sorted the edges in order of increasing
+cost, then greedily processed edges one by one, adding an edge e as
+long as it did not form a cycle. When some edges have the same cost, the
+phrase “in order of increasing cost” has to be specified a little more carefully:
+we’ll say that an ordering of the edges is valid if the corresponding
+sequence of edge costs is nondecreasing. We’ll say that a valid execution
+of Kruskal’s Algorithm is one that begins with a valid ordering of the
+edges of G.
+For any graph G, and any minimum spanning tree T of G, is there a
+valid execution of Kruskal’s Algorithm on G that produces T as output?
+Give a proof or a counterexample.
+--------------------
+
+
+
