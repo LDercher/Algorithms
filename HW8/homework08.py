@@ -270,17 +270,20 @@ def MST_Prim(G, w, s):  # {{{
   inf = float("inf")
   H = priority_dict({n: inf for n in G.nodes})
   H.update_key(s, 0)
-
+  it = 0
   pred = [-1 for _ in G.nodes]
   M = AdjList(len(G))
   while len(H) != 0:
     u = H.pop()
     if pred[u] != -1:   # should only have pred[u]=-1 at the root of the tree
       M.add_edge(pred[u], u)
+      print "MST tree = ", M, " on iteration ", it
     for v in G[u]:
       if v in H and w[(u, v)] < H[v]:
         pred[v] = u
         H.update_key(v, w[(u, v)])
+        print "MST heap = ", H, " on iteration ", it
+    it+=1
   return M
 # ----------------------------------------------------------------------------}}}
 
@@ -298,19 +301,27 @@ def Dijkstra(G, w, s):  # {{{
   path_wt = [float("inf") for n in G.nodes]
   seen = [ False for n in G.nodes]
   path_wt[s] = 0
-  for i in range(len(G.nodes) + 1):
+  T = AdjList(len(G))
+  it = 0
+  T.adj[s] = []
+  for i in range(len(G.nodes) - 1):
     u = minDist(path_wt,seen)
     seen[u] = True
     for v in range(len(G.nodes)):
       if (u,v) in w:
         if (not seen[v]) and path_wt[u] + w[(u,v)] < path_wt[v]:
           path_wt[v] = path_wt[u] + w[(u,v)]
-  return path_wt
+          print " it = ", it, "adding edge (", u, ",", v,")"
+          T.add_edge(u,v)
+          it += 1
+  return path_wt, T
  
 # ----------------------------------------------------------------------------}}}
 
 G, w = rand_weight_graph(10)
 print G, "\n"
 print w, "\n"
-shortest_path_from_0 = Dijkstra(G,w,0)
+shortest_path_from_0, T = Dijkstra(G,w,0)
 print shortest_path_from_0
+print T
+primTree = MST_Prim(G,w,0)

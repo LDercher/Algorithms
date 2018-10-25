@@ -1,0 +1,46 @@
+HW 10 textbook solutions
+===========
+Author:    Luke Dercher
+Email:     luke.dercher@gmail.com
+===========
+
+.ap1.
+--------------------
+Suppose that we have a file F with a 256 character alphabet. Furthermore, suppose that each character
+occurs “about” as often as any other: the minimum character frequency is greater than half the maximum
+character frequency. Prove that the Huffman coding is no more efficient than using an standard 8-bit
+fixed length coding.
+
+sol. 
+|epsilon| = 256
+elems in epsilon are sorted as such c_1 < c_2 < .. < c_256
+- after 128 merge ops we have 128 2 leaf trees w/
+  w(c_1 + c_2) < w(c_3 + c_4) < .. < w(c_255 + c_256)
+  - note: each merge op generates a larger object since 
+  w(c_256) < w(c_1 + c_2) < w(c_3 + c_4) < .. < w(c_255 + c_256)
+  & hence will be inserted at the end of the queue
+- Similiarly after another 64 merge ops we have 64 4 leaf trees s.t.
+  w(c_255 + c_256) < w(c_1 + c_2 + c_3 + c_4) < .. < w(c_253 + c_254 + c_255 + c_256)
+- This leads us to a tree with each elem in epsilon having depth = 8. This means we have to assign 8 bits to each elem in epsilon, and so we have a Huffman encoding that is no better than an 8-bit fixed length encoding. 
+--------------------
+ 
+ 
+.ap3.
+--------------------
+
+--------------------
+
+
+.4.8.
+--------------------
+
+--------------------
+
+
+.4.11.
+--------------------
+
+--------------------
+
+
+
