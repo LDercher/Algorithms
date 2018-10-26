@@ -21,7 +21,34 @@ def MSP(A, low, high):  # {{{
   # triple (i, j, sum(B)). Note that i = j is allowed, in which case the sum is
   # 0.
 
-  return None # remove in your solution
+  if low == high:
+    return A[0]
+
+  half = (low + high)/2
+  right_ind = 0
+  right_ind = 0
+  left_msl = MSP(A,0,half)
+  right_msl = MSP(A,half, len(A)-1)
+  left_sum = float('-inf')
+  right_sum = float('-inf')
+  summation = 0
+  for i in range(half, high):
+    summation += A[i]
+    if max(left_sum,summation) != left_sum: 
+      left_sum = max(left_sum,summation)
+      left_ind = i
+  
+  summation = 0
+  for i in range(low,half):
+    summation += A[i]
+    if max(right_sum,summation) != right_sum: 
+      right_sum = max(right_sum,summation)
+      right_ind = i
+
+  ans = max(left_sum,right_sum)
+  
+  return right_ind, left_ind, max(ans, left_sum + right_sum)
+
 #----------------------------------------------------------------------------}}}
 
 
