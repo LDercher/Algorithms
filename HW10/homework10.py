@@ -18,47 +18,36 @@ def rand_MSP(n, max_delta): # {{{
 #----------------------------------------------------------------------------}}}
 
 def MSP(A, low, high):  # {{{
-  # Find a sublist B = A[i:j] such that sum(B) is maximal. You should return the
-  # triple (i, j, sum(B)). Note that i = j is allowed, in which case the sum is
-  # 0.
 
 # Base Case: Only one element 
     if (low == high): 
           return  A[low] 
-    # Find middle point 
+    # Find the middle
     mid = (low + high) // 2
-
-    print "mid = ", mid, "size of A = ", len(A), "high = ", high
-  
-    # Return maximum of following three possible cases 
-    # a) Maximum subarray sum in left half 
-    # b) Maximum subarray sum in right half 
-    # c) Maximum subarray sum such that the  
-    #     subarray crosses the midpoint  
-    
+    # divide and conquer!!
     return max(MSP(A, low, mid), 
                MSP(A, mid + 1, high), 
-               maxCrossSum(A, low, mid, high))
+               maxSum(A, low, mid, high))
 
-def maxCrossSum(arr, l, m, h) : 
+def maxSum(arr, l, m, h) : 
       
     # Include elements on left of mid. 
-    sm = 0; left_sum = -10000
+    sum = 0; left_sum = -10000
       
     for i in range(m, l-1, -1) : 
-        sm = sm + arr[i] 
+        sum = sum + arr[i] 
           
-        if (sm > left_sum) : 
-            left_sum = sm 
+        if (sum > left_sum) : 
+            left_sum = sum 
       
       
     # Include elements on right of mid 
-    sm = 0; right_sum = -1000
+    sum = 0; right_sum = -1000
     for i in range(m + 1, h + 1) : 
-        sm = sm + arr[i] 
+        sum = sum + arr[i] 
           
-        if (sm > right_sum) : 
-            right_sum = sm 
+        if (sum > right_sum) : 
+            right_sum = sum 
       
   
     # Return sum of elements on left and right of mid 
