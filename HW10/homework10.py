@@ -1,6 +1,7 @@
 # imports {{{1
 from __future__ import division
 from random import randrange
+import math
 #---------------------------------------------------------------------------}}}1
 
 def MSP_bad(A): # {{{
@@ -20,34 +21,33 @@ def MSP(A, low, high):  # {{{
   # Find a sublist B = A[i:j] such that sum(B) is maximal. You should return the
   # triple (i, j, sum(B)). Note that i = j is allowed, in which case the sum is
   # 0.
+  if A[low:high] == []:
+    return (0, 0, [])
 
-  if low == high:
-    return A[0]
+  half = int(math.ceil(low+ high / 2))
 
-  half = (low + high)/2
+  left_ind = 0
   right_ind = 0
-  right_ind = 0
-  left_msl = MSP(A,0,half)
-  right_msl = MSP(A,half, len(A)-1)
-  left_sum = float('-inf')
-  right_sum = float('-inf')
+
+  max_sum = float('-inf')
   summation = 0
-  for i in range(half, high):
+  for i in range(low, high):
     summation += A[i]
-    if max(left_sum,summation) != left_sum: 
-      left_sum = max(left_sum,summation)
+    if max(max_sum,summation) != max_sum: 
+      max_sum = max(max_sum,summation)
       left_ind = i
-  
-  summation = 0
-  for i in range(low,half):
-    summation += A[i]
-    if max(right_sum,summation) != right_sum: 
-      right_sum = max(right_sum,summation)
-      right_ind = i
 
-  ans = max(left_sum,right_sum)
-  
-  return right_ind, left_ind, max(ans, left_sum + right_sum)
+  (i_lm, j_lm, l_lm) = MSP(A,low,half)
+  (i_rm, j_rm, l_rm) = MSP(A,half,high)
+  (i_l, j_l, l_l) = MSP(A,0,half)
+  (i_r, j_r, l_r) = MSP(A,half,high)
+
+  return 0,0,max((sum(l_lm),sum(l_rm),sum(l_l),sum(l_r)))
+
+
+
+
+
 
 #----------------------------------------------------------------------------}}}
 
