@@ -31,49 +31,33 @@ def credit_card(L): # {{{
   # Detect whether there is an element of L that occurs more than half the time.
   # You should return the element if there is one as well as a count of the
   # number of times it occurs in L. If there is no such element, return None, 0.
+  print L
+  if len(L) == 1:
+    return None
 
 
+  if len(L) % 2 == 0:
+    m = int(len(L)/2)
+    credit_card(L[:m])
+    credit_card(L[m:(len(L))])
+  else:
+    mf = int(math.floor(len(L)/2))
+    mc = int(math.ceil(len(L)/2))
+   # print "mf =", mf, " mc = ", mc, " of ", len(L)
+    credit_card(L[:mc])
+    credit_card(L[mc:(len(L))])
 
-  return find_majority_elem(L,len(L))[0]  # if there is no majority element
 
-def union(a, b):
-    """ return the union of two lists """
-    return list(set(a) | set(b))
-
-def find_majority_elem(L,n):
-
-  if n <= 2:
-    return L
-    
-  candidates = union(find_majority_elem(L[:int(math.floor(n/2))],int(math.floor(n/2))),find_majority_elem(L[:int(math.ceil(n/2))],int(math.ceil(n/2))))
-
-  print "length of candidates ",len(candidates), "length of L", len(L) 
-
-  majority = []
-  for i in range(len(candidates)):
-    count = 0
-    j = 1
-    while j < n:
-      k = L[j]
-      l = candidates[i]
-      if L[j] == candidates[i]:
-        count +=1
-      j +=1
-
-    if count >= math.ceil(n/2):
-      majority.append((candidates[i],count))
-
-    return majority
 #----------------------------------------------------------------------------}}}
 
 # test your credit_card() solution using something like this
-for _ in xrange(10**4):
-  v = randrange(2,30)
-  s = randrange(2*v-1,v**2)
-  R = rand_cards(s,v)
-  A, count = credit_card(R)
-  if A != v:
-    print "whoops"
-    print R
-    print A
-    break
+#for _ in xrange(10**4):
+v = randrange(2,30)
+s = randrange(2*v-1,v**2)
+R = rand_cards(s,v)
+A = [1,2,3,4,5,6,7,8,9]
+B = [1,2,3,4,5,6,7,8,9,10]
+
+credit_card(A)
+credit_card(B)
+
