@@ -31,23 +31,22 @@ def credit_card(L): # {{{
   # Detect whether there is an element of L that occurs more than half the time.
   # You should return the element if there is one as well as a count of the
   # number of times it occurs in L. If there is no such element, return None, 0.
-  print L
   if len(L) == 1:
-    return None
+    return L
 
+  mf = int(math.floor(len(L)/2))
+  mc = int(math.ceil(len(L)/2))
+  A = credit_card(L[:mc])
+  B = credit_card(L[mc:(len(L))])
+  print "passing in A = ",A, " B = ", B
+  L = merge_and_compare(A,B)
 
-  if len(L) % 2 == 0:
-    m = int(len(L)/2)
-    credit_card(L[:m])
-    credit_card(L[m:(len(L))])
-  else:
-    mf = int(math.floor(len(L)/2))
-    mc = int(math.ceil(len(L)/2))
-   # print "mf =", mf, " mc = ", mc, " of ", len(L)
-    credit_card(L[:mc])
-    credit_card(L[mc:(len(L))])
+  return L
 
-
+def merge_and_compare(A,B):
+  L = A + B
+  #print L
+  return L
 #----------------------------------------------------------------------------}}}
 
 # test your credit_card() solution using something like this
