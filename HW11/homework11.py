@@ -2,6 +2,7 @@
 from __future__ import division
 from random import randrange
 import math
+import collections
 #---------------------------------------------------------------------------}}}1
 
 def rand_perm(size):  # {{{
@@ -33,19 +34,33 @@ def credit_card(L): # {{{
   # number of times it occurs in L. If there is no such element, return None, 0.
   if len(L) == 1:
     return L
-
+  ml = []
   mf = int(math.floor(len(L)/2))
   mc = int(math.ceil(len(L)/2))
   A = credit_card(L[:mc])
   B = credit_card(L[mc:(len(L))])
-  print "passing in A = ",A, " B = ", B
-  L = merge_and_compare(A,B)
+  if overHalf(ml,mf) or ml == []: 
+    ml = merge_and_compare(A,B)
+    print " over half found on ", ml
 
-  return L
+
+  return ml
+
+def overHalf(L, n):
+  for i in L:
+    if L.count(i) >= n:
+      return True
+  
+  return False
+
 
 def merge_and_compare(A,B):
   L = A + B
-  #print L
+  print L
+  count = collections.Counter()
+  for l in L:
+    count[l] += 1
+  print count
   return L
 #----------------------------------------------------------------------------}}}
 
@@ -54,9 +69,10 @@ def merge_and_compare(A,B):
 v = randrange(2,30)
 s = randrange(2*v-1,v**2)
 R = rand_cards(s,v)
-A = [1,2,3,4,5,6,7,8,9]
+A = [1,2,1,4,5,6,1,1,1]
 B = [1,2,3,4,5,6,7,8,9,10]
-
+print "CCa"
 credit_card(A)
+print "CCb"
 credit_card(B)
 
