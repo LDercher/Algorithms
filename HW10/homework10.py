@@ -18,48 +18,51 @@ def rand_MSP(n, max_delta): # {{{
 #----------------------------------------------------------------------------}}}
 
 def MSP(A, low, high):  # {{{
-  # Find a sublist B = A[i:j] such that sum(B) is maximal. You should return the
-  # triple (i, j, sum(B)). Note that i = j is allowed, in which case the sum is
-  # 0.
-  if A[low:high] == []:
-    return (0, 0, [])
 
-  half = int(math.ceil(low+ high / 2))
+# Base Case: Only one element 
+    if (low == high): 
+          return  A[low] 
+    # Find the middle
+    mid = (low + high) // 2
+    # divide and conquer!!
+    return max(MSP(A, low, mid), 
+               MSP(A, mid + 1, high), 
+               maxSum(A, low, mid, high))
 
-  left_ind = 0
-  right_ind = 0
-
-  max_sum = float('-inf')
-  summation = 0
-  for i in range(low, high):
-    summation += A[i]
-    if max(max_sum,summation) != max_sum: 
-      max_sum = max(max_sum,summation)
-      left_ind = i
-
-  (i_lm, j_lm, l_lm) = MSP(A,low,half)
-  (i_rm, j_rm, l_rm) = MSP(A,half,high)
-  (i_l, j_l, l_l) = MSP(A,0,half)
-  (i_r, j_r, l_r) = MSP(A,half,high)
-
-  return 0,0,max((sum(l_lm),sum(l_rm),sum(l_l),sum(l_r)))
-
-
-
-
-
+def maxSum(arr, l, m, h) : 
+      
+    # Include elements on left of mid. 
+    sum = 0; left_sum = -10000
+      
+    for i in range(m, l-1, -1) : 
+        sum = sum + arr[i] 
+          
+        if (sum > left_sum) : 
+            left_sum = sum 
+      
+      
+    # Include elements on right of mid 
+    sum = 0; right_sum = -1000
+    for i in range(m + 1, h + 1) : 
+        sum = sum + arr[i] 
+          
+        if (sum > right_sum) : 
+            right_sum = sum 
+      
+  
+    # Return sum of elements on left and right of mid 
+    return left_sum + right_sum; 
 
 #----------------------------------------------------------------------------}}}
 
 
 # run this to test out your algorithm
-for _ in range(10**3):
-  A = rand_MSP(randrange(1,51), randrange(101))
+for _ in range(1):
+  A = rand_MSP(10, randrange(101))
   B = MSP_bad(A)
-  G = MSP(A, 0, len(A))
-  if not ( sum(A[G[0]:G[1]]) == G[2] == B[2] ):
-    print "whoops"
-    print A
-    print B
-    print G
-    break
+  G = MSP(A, 0, len(A)-1)
+ # if not ( sum(A[G[0]:G[1]]) == G[2]):
+  print "list to MSP on", A
+   # print B
+  print "MSP found", G
+ #   break

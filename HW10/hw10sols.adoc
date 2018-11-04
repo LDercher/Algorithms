@@ -27,18 +27,122 @@ elems in epsilon are sorted as such c_1 < c_2 < .. < c_256
  
 .ap3.
 --------------------
+Recall the Maximum Sublist Problem discussed in class: given a list A of real number values, return
+indices i < j such that the sum of values in A[i : j] is greatest.
+
+(i) When A contains only positive numbers there is an O(1) time solution. What is it?
+
+sol. If the elements are all poritive then, the entire list is the max sublist. 
+
+(ii) Implement a solution to the problem in the associated python file. Your solution should run in
+Θ(n log n) time. Submit only your completed code (typed), not the whole file.
+
+sol. 
+def MSP(A, low, high):  # {{{
+
+# Base Case: Only one element 
+    if (low == high): 
+          return  A[low] 
+    # Find the middle
+    mid = (low + high) // 2
+    # divide and conquer!!
+    return max(MSP(A, low, mid), 
+               MSP(A, mid + 1, high), 
+               maxSum(A, low, mid, high))
+
+def maxSum(arr, l, m, h) : 
+      
+    # Include elements on left of mid. 
+    sum = 0; left_sum = -10000
+      
+    for i in range(m, l-1, -1) : 
+        sum = sum + arr[i] 
+          
+        if (sum > left_sum) : 
+            left_sum = sum 
+      
+      
+    # Include elements on right of mid 
+    sum = 0; right_sum = -1000
+    for i in range(m + 1, h + 1) : 
+        sum = sum + arr[i] 
+          
+        if (sum > right_sum) : 
+            right_sum = sum 
+      
+  
+    # Return sum of elements on left and right of mid 
+    return left_sum + right_sum; 
+
+(iii) Develop a non-recursive linear-time solution to the problem. You need not implement your solution,
+just describe it using pseudocode.
+Start at the left end of the array, and progress toward the right, keeping track of the maximum
+sublist seen so far. Knowing a maximum sublist of A[0 : j], extend the answer to find a maximum
+sublist of A[0 : j + 1] by using the following observation: a maximum sublist of A[0 : j + 1] is is
+either a maximum sublist of A[1 : j] or a sublist of the form A[i : j + 1] for some 0 ≤ i ≤ j + 1.
+Determine a maximum sublist of the form A[i : j + 1] in constant time based on previously known
+maximum sublists.
+
+def MSP(A,n): 
+       
+    max_found =  negative infinity
+    max_update = 0
+       
+    for i in range(0, n): 
+        max_update = max_update + A[i] 
+        if (max_found < max_update): 
+            max_found = max_update 
+  
+        if max_found < 0: 
+            max_update = 0   
+    return max_found 
 
 --------------------
 
 
-.4.8.
+.5.1.
 --------------------
+You are interested in analyzing some hard-to-obtain data from two separate databases. Each
+database contains n numerical values so there are 2n values total and you may assume that
+no two values are the same. You would like to determine the median of this set of 2n values, which
+we will define to be the n
+th smallest value. However, the only way you can access these values
+is through queries to the databases. In a single query, you can specify a value k to one of the
+databases and the chosen database will return the kth smallest value that it contains. Since queries
+are expensive, you would like to compute the median using as few queries as possible.
+Given an algorithm that finds the median value using at most O(log n) queries.
 
+def find_med_2DB(DB1, DB2, n):
+    half_1 = half_2 = n/2
+    for i in range(2,log n)
+    med_1 = Query(DB1, half_1) # get the median of DB1
+    med_2 = Query(DB2, half_2) # get the median of DB2
+        if med_1 > med_2:
+            half_1 = half_1 - n/(2^i) # next time, query the median of the upper half of DB1
+            half_2 = half_2 + n/(2^i) # next time, query the median of the lower half of DB2
+        else:
+            half_2 = half_2 - n/(2^i) # next time, query the median of the lower half of DB1
+            half_1 = half_1 + n/(2^i) # next time, query the median of the upper half of DB2
+
+    return min (med_1, med_2)
+
+observe the median of the two databases is less that max(med_database_1, med_database_2) since there are n values below this value.
+
+we find the median of the two by searching the databases medians in smaller and smaller sections until the correct one is found. 
+
+By the end of the loop, med_1, med_2 are the nth and the (n + 1)th smallest numbers of the joint database, hence we return the smaller one among med_1, med_2.
 --------------------
 
 
 .4.11.
 --------------------
+Suppose you are consulting for a bank that's concerned about fraud detection, and they come to you with the following problem. They have a collection of n bank cards that they've confiscated, suspecting them of being used in fraud. Each bank card is a small plastic object, containing a magnetic stripe with some encrypted data, and it corresponds to a unique account in the bank. Each account can have many bank cards corresponding to it, and we'll say that two bank cards are equivalent is they correspond to the same account. It's very difficult to read the account number off a bank card directly, but the bank has a high-tech "equivalence tester" that takes two bank cards and, after performing some computations, determines whether they are equivalent. Their question is the following: among the collection of n cards, is there a set of more than n/2 of them that are all equivalent to one another? Assume that the only feasible operations you can do with the cards are to pick two of them and plug them in to the equivalence tester. Show how to decide the answer to their question with only O(n log n) invocations of the equivalence tester.
+
+1. Divide the set of cards in half into two groups.
+2. Check either group to see if a card is repeated n/4 times.
+3. If no such condition exists then there are no sets of n/2 cards which are equivalent.
+
+the algorith described is a divide and conquer algorithm that runs in T(n) = 2T(n/2) + O(n) = O(n log n)
 
 --------------------
 
