@@ -2,7 +2,7 @@
 from __future__ import division
 from random import randrange
 import math
-import collections
+from collections import Counter
 #---------------------------------------------------------------------------}}}1
 
 def rand_perm(size):  # {{{
@@ -28,40 +28,35 @@ def rand_cards(n, max_value=2):  # {{{
   return base_perm
 #----------------------------------------------------------------------------}}}
 
-def credit_card(L): # {{{
-  # Detect whether there is an element of L that occurs more than half the time.
-  # You should return the element if there is one as well as a count of the
-  # number of times it occurs in L. If there is no such element, return None, 0.
-  if len(L) == 1:
+def credit_card(L):
+  recurse_lim = math.ceil(len(L)/4)
+  cands = call(L,recurse_lim)
+  return cands
+
+def call(L,n): # {{{
+  if len(L) <= n:
     return L
-  ml = []
+  cands = []
   mf = int(math.floor(len(L)/2))
   mc = int(math.ceil(len(L)/2))
-  A = credit_card(L[:mc])
-  B = credit_card(L[mc:(len(L))])
-  if overHalf(ml,mf) or ml == []: 
-    ml = merge_and_compare(A,B)
-    print " over half found on ", ml
+  cands = (list(overHalf(L,mc)))
+  A = call(L[:mc],n)
+  B = call(L[mc:(len(L))],n)
 
-
-  return ml
+  return cands
 
 def overHalf(L, n):
+  print "overhalf called"
+  counter = Counter()
+  cands = set()
   for i in L:
-    if L.count(i) >= n:
-      return True
-  
-  return False
+    counter[i] += 1
+    if counter[i] >= n:
+      if i not in cands:
+        cands.add(i)
 
+  return cands
 
-def merge_and_compare(A,B):
-  L = A + B
-  print L
-  count = collections.Counter()
-  for l in L:
-    count[l] += 1
-  print count
-  return L
 #----------------------------------------------------------------------------}}}
 
 # test your credit_card() solution using something like this
@@ -69,10 +64,11 @@ def merge_and_compare(A,B):
 v = randrange(2,30)
 s = randrange(2*v-1,v**2)
 R = rand_cards(s,v)
-A = [1,2,1,4,5,6,1,1,1]
-B = [1,2,3,4,5,6,7,8,9,10]
+A = ['a','b','a','d','e','f','a','a','a','b']
+#B = [1,2,3,4,5,6,7,8,9,10]
 print "CCa"
-credit_card(A)
-print "CCb"
-credit_card(B)
+print A
+print credit_card(A)
+#print "CCb"
+#credit_card(B)
 

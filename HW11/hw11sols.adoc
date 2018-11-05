@@ -1,0 +1,121 @@
+HW 11 textbook solutions
+===========
+Author:    Luke Dercher
+Email:     luke.dercher@gmail.com
+===========
+
+.ap1.
+--------------------
+
+ Use the master theorem to find the Θ-class of each of the following recurrences.
+(i) T(n) = 2T(n/4) + 1.
+
+    we have a = 2, b = 4, and f(n) = theta(n^c) where c = 0  
+    we also have log_b a = 1/2
+    since c is less than log_b a we have the T(n) = theta(n^(log_b a)) = theta(n^(1/2))
+    
+(ii) T(n) = 2T(n/4) + √n.
+
+    we have a = 2, b = 4, and f(n) = theta(n^c) where c = 1/2  
+    we also have log_b a = 1/2
+    since c is equal to log_b a we have the T(n) = theta(n^c * log n) = theta(n^(1/2) * log n)
+
+(iii) T(n) = 2T(n/4) + n.
+
+    we have a = 2, b = 4, and f(n) = theta(n^c) where c = 1  
+    we also have log_b a = 1/2
+    since c is grater than log_b a we have the T(n) = theta(f(n)) = theta(n)
+
+(iv) T(n) = 2T(n/4) + n^2
+
+    we have a = 2, b = 4, and f(n) = theta(n^c) where c = 2  
+    we also have log_b a = 1/2
+    since c is greater than log_b a we have the T(n) = theta(f(n)) = theta(n^2)
+
+--------------------
+ 
+ 
+.ap3.
+--------------------
+
+--------------------
+
+
+.ap4.
+--------------------
+
+--------------------
+
+
+.ap5.
+--------------------
+
+def credit_card(L):
+  recurse_lim = math.ceil(len(L)/4)
+  cands = call(L,recurse_lim)
+  return cands
+
+def call(L,n): # {{{
+  if len(L) <= n:
+    return L
+  cands = []
+  mf = int(math.floor(len(L)/2))
+  mc = int(math.ceil(len(L)/2))
+  cands = (list(overHalf(L,mc)))
+  A = call(L[:mc],n)
+  B = call(L[mc:(len(L))],n)
+
+  return cands
+
+def overHalf(L, n):
+  counter = Counter()
+  cands = set()
+  for i in L:
+    counter[i] += 1
+    if counter[i] >= n:
+      if i not in cands:
+        cands.add(i)
+
+  return cands
+--------------------
+
+.ap4.
+--------------------
+
+limits recursion depth by ceil(n/4). This gives the ability to check enough of the list to determine if a set of same elems S has |S| = n/4 and still run in contstant time. 
+--------------------
+
+
+.5.6.
+--------------------
+	
+Consider an n-node complete binary tree T, where n=2^d - 1 for some d. Each node v of T is labeled with a real number x_v. You may assume that the real numbers labeling the nodes are all distinct. A node v of T is a local minimum if the label x_v is less than the label x_w for all nodes w that are joined to v by an edge.
+
+You are given such a complete binary tree T, but the labeling is only specified in the following implicit way: for each node v, you can determine the value x_v by probing the node v. Show how to find a local minimum of T using only O(log n) probes to the nodes of T.
+
+L = store tree in list with nodes in same location in list
+
+loacl_min(n)
+
+right = compute right node index of n
+
+if |L| = 0:
+    return None 
+
+if |L| == 1:
+    return L[1]
+
+else:
+    if L[right_node - 1] < L[right] < L[right + 1]:
+        local_min(right + 1)
+    elif: L[right_node - 1] > L[right] > L[right + 1]:
+        local_min(right - 1)
+    else:
+        return n
+
+
+
+--------------------
+
+
+
