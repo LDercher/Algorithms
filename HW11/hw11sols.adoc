@@ -33,17 +33,76 @@ Email:     luke.dercher@gmail.com
     since c is greater than log_b a we have the T(n) = theta(f(n)) = theta(n^2)
 
 --------------------
+
+.ap2.
+--------------------
+
+Can the master theorem be applied to the recurrence T(n) = 4T(n/2) + n^2(log(n))? Why or why not?
+Give a good asymptotic upper bound for it.
+
+    note: the difference between f(n) and n^(log_b a) can be expressed f(n)/n^(log_2 4) = (n^2(log n))/ n ^2 = 1 / log n which is not < n^e for any constant e
+    Therefore the difference is not polynomial and the master theroom does not apply.
+
+    analysis: T(n) = 4T(n/2) + n^2*log n = 4(4(T((n-1)/2) + (n/2)^2 * log(n/2)) + n^2 * log n
+              T(n) = 4(4(4(T((n-2)/2) + ((n-1)/2)^2 * log ((n-1)/2)) + (n/2)^2*log(n/2)) + n^2 * log n
+
+    observe T(n) is dominated by the (n-k/2)^2 term. Therefore T(n) is upper bounded by (n/2)^2
+
+
+--------------------
+
  
  
 .ap3.
 --------------------
 
+Show that T(0) = 1, T(n) = T(n-1) + n is O(n^2)
+
+Induction on n
+
+    Base case: 
+        T(0) = 1, given
+
+    Assume:
+        T(l) = l^2 for l < n
+
+    Show true for n:
+        T(n) = T(n-1) + n <= (n-1)^2 + n = n^2 - n + 1
+        note: T(n) = n^2 - n + 1 is dominated by n^2 term and is O(n^2)
+
+    Further explanation:
+        T(n) = T(n-1) + n = T(n-2) + n + n = T(n - 3) + n + n + n ...
+        T(n) = T(n-k) + sum n from 0 to k-1
+        choose k = n-1
+        T(n) = T(n-(n-1)) + sum n from 0 to n-2
+        T(n) = T(1) + n(n-2) = n^2 - n + 1
 --------------------
 
 
 .ap4.
 --------------------
 
+Show that T(1) = 10, T(n) = T(ceil(n/2)) + 1 is O(log n)
+
+Induction on n
+
+    Base case: 
+        T(1) = 10, given
+
+    Assume: T(l) = log l for l < n
+
+    Show  true for n:
+        T(n) = T(ceil(n/2)) <= log(ceil(n/2)) + 1
+
+    Further explanation:
+        T(n) = T(ceil(n/2)) + 1 = if (ceil(n/2) = n/2) then T(n) = T(ceil((n-1)/2) + 1 = T(ceil((n-2)/2) + 1 = T(ceil((n-3)/2) + 1 + 1 = T(ceil((n-4)/2) + 1 + 1
+                                                       else T(n) = T(ceil((n-1)/2) = T(ceil((n-2)/2) + 1 = T(ceil((n-3)/2) + 1 = T(ceil((n-4)/2) + 1 + 1
+
+        T(n) = T(ceil((n-k)/2)) + sum 1 from 0 to ceil(k/2)
+            choose k = n-2
+            T(n) = T(1) + sum 1 from 0 to ceil((n-2)/2)
+            T(n) = 10 + sum 1 from 0 to ceil((n-2)/2)
+            note this summation grows very similiar to log n hence T(n) is bounded by n^2 
 --------------------
 
 
