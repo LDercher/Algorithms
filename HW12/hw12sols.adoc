@@ -41,7 +41,7 @@ solving for the unknowns we have
 
 .ap3.
 --------------------
- Recall that if A is an n × x matrix then the determinant of A can be computed by cofactor expansion
+ Recall that if A is an n × n matrix then the determinant of A can be computed by cofactor expansion
 along row 1 by
 det(A) = sum from k=1 to n of(−1)^(1+k)a_1k det(A1k),
 where A1k is the (n − 1) × (n − 1) matrix obtained from A by deleting row 1 and column k.
