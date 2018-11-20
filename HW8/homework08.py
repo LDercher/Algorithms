@@ -277,12 +277,12 @@ def MST_Prim(G, w, s):  # {{{
     u = H.pop()
     if pred[u] != -1:   # should only have pred[u]=-1 at the root of the tree
       M.add_edge(pred[u], u)
-      print "MST tree = ", M, " on iteration ", it
+      #print "MST tree = ", M, " on iteration ", it
     for v in G[u]:
       if v in H and w[(u, v)] < H[v]:
         pred[v] = u
         H.update_key(v, w[(u, v)])
-        print "MST heap = ", H, " on iteration ", it
+       # print "MST heap = ", H, " on iteration ", it
     it+=1
   return M
 # ----------------------------------------------------------------------------}}}
@@ -311,17 +311,18 @@ def Dijkstra(G, w, s):  # {{{
       if (u,v) in w:
         if (not seen[v]) and path_wt[u] + w[(u,v)] < path_wt[v]:
           path_wt[v] = path_wt[u] + w[(u,v)]
-          print " it = ", it, "adding edge (", u, ",", v,")"
           T.add_edge(u,v)
           it += 1
+          print path_wt
   return path_wt, T
  
 # ----------------------------------------------------------------------------}}}
 
-G, w = rand_weight_graph(10)
+G, w = rand_weight_graph(6)
 print G, "\n"
 print w, "\n"
 shortest_path_from_0, T = Dijkstra(G,w,0)
 print shortest_path_from_0
 print T
 primTree = MST_Prim(G,w,0)
+print "prim tree = ", primTree

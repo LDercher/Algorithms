@@ -1,0 +1,139 @@
+HW 13 textbook solutions
+===========
+Author:    Luke Dercher
+Email:     luke.dercher@gmail.com
+===========
+
+.ap1.
+--------------------
+Consider the rod-cutting problem, but where each cut incurs a fixed cost of 1. The profit associated
+with a solution is now the sum of the prices of the paces minus the costs of making the cuts.
+
+(i) Explain the process of developing a dynamic programming solution to this problem.
+
+    In my solution to the rod cutting problem where each cut incurs a cost of 1, I have subtracted 1 from the profit that can be made from each cut. A cut is compared after every recursive call to a smaller portion of the pipe. 
+
+(ii) Implement your solution in the associated python file. 
+
+    def modified_rod_cut(P,n):  # {{{
+  """ 
+  - P is a table of prices. P[0] = 0, and P[k] = price for a rod of length k,
+    where k > 0. 
+  - n is the size of the rod to cut. By assumption n < len(P), so P[n] is
+    defined. 
+  - You should return a pair C, R. C is an array holding the sizes of the pieces
+    you will cut the rod into, and R is the revenue that is associated with
+    these cuts.
+  """
+  if n == 1:
+    return [],0
+  
+  max_c = [n]
+  max_rev = P[n]
+  for k in range(1,n/2):
+    L, PL = modified_rod_cut(P, k)
+    R, PR = modified_rod_cut(P,k-l)
+    PL -= 1
+    PR -= 1
+    if PL + PR > max_rev:
+      max_rev = PL + PR
+      max_c = list(set(L)|set(R))
+
+  return max_c, max_rev
+--------------------
+ 
+ 
+.ap2.
+--------------------
+Recall the solution to the rod-cutting problem given in class had non-memoized runtime given by
+T(0) = 1, T(n) = 1 + sum of T(k) from k=0 to n-1.
+Solve this recurrence. [Hint: what is T(n) − T(n − 1)?]
+
+T(n) - T(n - 1) = T(n) - (T(n - 1) - T(n - 2)) =  T(n) - T(n - 1) - ... - T(0)
+
+T(1) = 1 + sum of T(k) from k=0 to 0 = 1 + 1
+T(2) = 1 + sum of T(k) from k=0 to 1 = 1 + T(0) + T(1) = 1 + 1 + 2 = 4 
+T(3) = 1 + sum of T(k) from k=0 to 2 = 1 + T(0) + T(1) + T(2) = 1 + 1 + 2 + 4 = 8
+...
+T(n) = 1 + sum of T(k) from k=0 to n-1 = 1 + T(0) + ... + T(n-1) = 1 + 1 + 2 + 4 + 8 + .. + 2(n-2) + 2(n-1) = 2n + 2(n-1) + ... + 1 + 1  = (n*2)2  = O(2n^2) = O(n^2)
+--------------------
+
+
+.ap3.
+--------------------
+Consider this greedy solution to the rod-cutting problem. Define δ(i) = pi/i (i.e. the value per inch of
+a rod of length 
+i). Solve the rod-cutting problem for a rod of length n by first cutting off the smallest
+piece with maximum δ, and repeating this process on the remaining length of rod.
+Does this procedure always solve the rod-cutting problem?
+
+rod_cut(P,n):
+
+  if n == 1:
+    return [],0
+  
+  max_c = [n]
+  δ = P[n]
+  for k in range(1,n/2):
+    L, PL = rod_cut(P, k)
+    R, PR = rod_cut(P,k-l)
+    if PL + PR > δ:
+      δ = PL + PR
+      max_c = list(set(L)|set(R))
+
+  return max_c, δ
+
+
+--------------------
+
+.ap4.
+--------------------
+ Find an optimal parenthesization of a matrix-chain product with dimension sequence given by
+
+
+<5, 10, 3, 12, 5, 50, 6> = < a_0, a_1, a_2, a_3, a_4, a_5, a_6, a_7 >
+
+((a_0 * a_1)((a_2 * a_3)(a_4 * a_5))
+
+
+--------------------
+
+
+.6.6.
+--------------------
+Solution to pretty printing problem assuming we have a precomputed slack table. 
+
+Pretty_print(W, L)
+    n = length[W]
+    S = slack_table(W, L)
+    cost = []
+    break_word = NULL
+    # Determine the least-cost arrangement
+    cost[1] = 0
+    for i in range(1, n): 
+        cost[i + 1] = INT_MAX
+        k = i
+        T = cost[k] + S[k][i]
+        if T < cost[i + 1]:
+            cost[i + 1] = T
+            break_word[i] = k
+        while k ≥ 2 and T < INT_MAX
+            k = k − 1
+            T = cost[k] + S[k][i]
+            if T < cost[i + 1]:
+                cost[i + 1] = T
+                break_word[i] = k
+    # Determine the first word on each line
+    first = []
+    first = break_word[n] ∪ first
+    i = break_word[n] − 1
+    while i > 0:
+        first = break_word[i] ∪ first
+        i = break_word[i] − i
+    return first
+
+--------------------
+
+
+
+

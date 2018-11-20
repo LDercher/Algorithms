@@ -75,6 +75,8 @@ edges of G.
 For any graph G, and any minimum spanning tree T of G, is there a
 valid execution of Kruskal’s Algorithm on G that produces T as output?
 Give a proof or a counterexample.
+
+
 --------------------
 
 
