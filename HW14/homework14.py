@@ -165,16 +165,34 @@ def shortest_path_recursive(G, w, s, t, M=[]): # {{{
   return [], 0
 #----------------------------------------------------------------------------}}}
 def shortest_path_iterative(G, w, s, t): # {{{
+  M = [ None for _ in G ]
+  M[s] = [],0
+  for k in range(len(M)-1):
+    min_path = []
+    min_weight = float('inf')
+    for l in G[k]:
+      if l == t:
+        return M
+      if M[k] != None:    
+        if(M[l][1] < min_weight):
+          print 1
+          min_weight = M[l][1] + w[(k,l)]
+          min_path = M[l][0] + l
+      else:
+        min_weight = []
+        min_path = w[(k,l)]
+        print min_path
+    M[k] = min_path, min_weight
 
-  return [], 0
+
 #----------------------------------------------------------------------------}}}
 
 # You should test your solution using something like this.
-G, w = rand_weight_graph(randrange(20))
-s = randrange(len(G))
-t = randrange(len(G))
+G, w = rand_weight_graph(10)#randrange(20))
+s = 1#randrange(len(G))
+t = 10#randrange(len(G))
 print G
 print w
 print "(s,t) = ", (s, t)
-print shortest_path_recursive(G, w, s, t)
+# print shortest_path_recursive(G, w, s, t)
 print shortest_path_iterative(G, w, s, t)
