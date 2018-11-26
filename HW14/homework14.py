@@ -5,6 +5,98 @@ from random import randrange
 import heapq
 #---------------------------------------------------------------------------}}}1
 
+class priority_dict(dict):  # {{{1
+  # A dictionary that maintains a heap with items in the dictionary sorted
+  # according to the dictionary keys. It is a subclass of the dictionary class.
+  # You can read about dictionaries here:
+  #
+  #   https://docs.python.org/2/library/stdtypes.html#typesmapping
+  #
+  # Methods from the dictionary superclass are inherited, but some might not
+  # play nicely with the heap.
+  #
+  # Updating the keys is supported, which is the main benefit. We use a heap to
+  # store the data, and a dictionary structure to store the (key, value)
+  # association. Upon updating a key, we update the dictionary and add a
+  # *duplicate* entry to the heap (or rebase if it has grown too large). This
+  # saves O(n) on each operation until we have to rebase. When we pop from the
+  # heap, we have to make sure that we're not getting a value with an outdated
+  # key, so we check the dictionary to see if the keys match.
+  #
+  # priority_dict._heap -- the actual heap
+  #
+  # priority_dict._rebuild() -- rebuilds the heap
+  #
+  # priority_dict.pop() -- returns and removes the element with the least key
+  # priority_dict.peek() -- returns and does not remove the element with the
+  #   least key
+  # priority_dict.push(value,key) -- adds the (key, value) pair to the heap
+  # priority_dict.update_key(value,key) -- updates the key of value to new_key
+
+  def __init__(self, *args, **kwargs):  # {{{
+    # call the dictionary __init__ from the superclass
+    super(priority_dict, self).__init__(*args, **kwargs)
+    self._rebuild()  # sets up the heap
+  # --------------------------------------------------------------------------}}}
+
+  def _rebuild(self):  # {{{
+    # The heap likes key to come before value, but we store it backwards in the
+    # dictionary
+    self._heap = [(key, value) for (value, key) in self.iteritems()]
+    heapify(self._heap)   # O(n)
+  # --------------------------------------------------------------------------}}}
+
+  def pop(self):  # {{{
+    # Raises exception if heap is empty
+    # Get what we think the top of the heap is as a (key, value) pair. The
+    # key that the dict holds should match, otherwise the key is outdated and
+    # we should get the next item in the heap.
+
+    key, value = heappop(self._heap)
+    while value not in self or self[value] != key:
+      key, value = heappop(self._heap)
+    del self[value]
+    return value
+  # --------------------------------------------------------------------------}}}
+
+  def peek(self):  # {{{
+    # Raises exception if heap is empty.
+    # See priority_dict.pop for a description of what's going on.
+
+    key, value = self._heap[0]
+    while value not in self or self[value] != key:
+      heappop(self._heap)   # only throws away outdated (key, value) pairs
+      key, value = self._heap[0]
+    return value
+  # --------------------------------------------------------------------------}}}
+
+  def push(self, value, key):  # {{{
+    # adds (key,value) to heap and to the dictionary
+
+    heappush(self._heap, (key, value))
+    self[value] = key
+  # --------------------------------------------------------------------------}}}
+
+  def update_key(self, value, key):  # {{{
+    # Update the key for value. We don't remove it from the heap since this will
+    # be O(n). Instead we update the key in the dictionary and add a duplicate
+    # to the heap. If the heap is too big (2x the dictionary), then we rebuild
+    # so that we aren't wasting memory.
+
+    super(priority_dict, self).__setitem__(value, key)
+    heappush(self._heap, (key, value))
+
+    # rebuild the heap if it's too big
+    if len(self._heap) >= 2*len(self):
+      self._rebuild()
+  # --------------------------------------------------------------------------}}}
+
+  def __setitem__(self, value, key):  # {{{
+    self.update_key(value, key)
+  # --------------------------------------------------------------------------}}}
+# ---------------------------------------------------------------------------}}}1
+
+
 class AdjList: # {{{1
   # A class for the adjacency list representation of a graph.
   # Undirected graphs will have an edge (s,t) if and only if it has edge (t,s).
@@ -169,7 +261,9 @@ def shortest_path_iterative(G, w, s, t): # {{{
   dist = [ float('inf') for _ in G]
   M[s] = [s],0
   v = s
-  
+  H = priority_dict({n: float('inf') for n in G.nodes})
+  H.update_key(s, 0)
+
   while v != t:
     min_dist = float('inf')
     min_path = []
