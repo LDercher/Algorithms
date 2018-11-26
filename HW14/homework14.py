@@ -166,31 +166,46 @@ def shortest_path_recursive(G, w, s, t, M=[]): # {{{
 #----------------------------------------------------------------------------}}}
 def shortest_path_iterative(G, w, s, t): # {{{
   M = [ None for _ in G ]
-  M[s] = [],0
-  for k in range(len(M)-1):
+  dist = [ float('inf') for _ in G]
+  M[s] = [s],0
+  v = s
+  
+  while v != t:
+    min_dist = float('inf')
     min_path = []
-    min_weight = float('inf')
-    for l in G[k]:
-      if l == t:
-        return M
-      if M[k] != None:    
-        if(M[l][1] < min_weight):
-          print 1
-          min_weight = M[l][1] + w[(k,l)]
-          min_path = M[l][0] + l
-      else:
-        min_weight = []
-        min_path = w[(k,l)]
-        print min_path
-    M[k] = min_path, min_weight
+    for u in G[v]:
+      print "checking adj nodes, ",u, v
+      pwv = w[(u,v)]
+      if M[u] == None and u != v:
+        print "M pwv at ", v, " = ", M[v][1], "w edge", v, u, " = ", w[(u,v)]
+        pwv = M[v][1] + w[(u,v)]
+        print "checking path weight val", pwv
+        if pwv < min_dist:
+          min_dist = pwv
+          min_path = list(set().union([v],M[v][0],[u]))
+          print " min path found to be ", min_path, " with weight ", min_dist
+          next_node = u
+    if next_node != v:
+      v = next_node
+      M[next_node] = min_path, min_dist
+    else:
+      v = M[v][0][-2]
+    print M
+    print v
+
+  return M
+
+
+
+
 
 
 #----------------------------------------------------------------------------}}}
 
 # You should test your solution using something like this.
 G, w = rand_weight_graph(10)#randrange(20))
-s = 1#randrange(len(G))
-t = 10#randrange(len(G))
+s = randrange(len(G))
+t = randrange(len(G))
 print G
 print w
 print "(s,t) = ", (s, t)
