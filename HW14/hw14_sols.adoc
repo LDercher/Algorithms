@@ -1,0 +1,131 @@
+HW 14 textbook solutions
+===========
+Author:    Luke Dercher
+Email:     luke.dercher@gmail.com
+===========
+
+.6.20.
+--------------------
+Suppose you’re managing a consulting team of expert computer hackers, and each week you have to choose a job for them to undertake. Now, as you can well imagine, the set of possible jobs is divided into those that arelow-stress (e.g., setting up a Website for a class at the loca lelementary school) and those that are high-stress (e.g., protecting the nation’s most valuable secrets, or helping a desperate group of Cornell students finish a project that has something to do with compilers). The basic question, each week, is whether to take on a low-stress job or a high-stress job.
+
+If you select a low-stress job for your team in week i, then you get a revenue of i > 0 dollars; if you select a high-stress job, you get a revenue of hi > 0 dollars. The catch, however, is that in order for the team to take on a high-stress job in week i, it’s required that they do no job (of either type) in week i?1; they need a full week of prep time to get ready for the crushing stress level. On the other hand, it’s okay for them to take a lowstress job in week i even if they have done a job (of either type) in week i?1.
+
+So, given a sequence of n weeks, a plan is specified by a choice of “low-stress,” “high-stress,” or “none” for each of the n weeks, with the property that if “high-stress” is chosen for week i > 1, then “none” has to be chosen for week i?1. (It’s okay to choose a high-stress job in week 1.) The value of the plan is determined in the natural way: for each i, you add i to the value if you choose “low-stress” in week i, and you add hi to the value if you choose “high-stress” in week i. (You add 0 if you choose “none” in week i.)
+
+The problem. Given sets of values 1, 2,...,n and h1,h2,...,hn, find a plan of maximum value. (Such a plan will be called optimal.)
+
+Example. Suppose n=4, and the values of i and hi are given by the following table. Then the plan of maximum value would be to choose “none” in week 1, a high-stress job in week 2, and low-stress jobs in weeks 3 and 4. The value of this plan would be 0+50+10+10=70.
+
+|================================
+|  |Week 1|Week 2|Week 3|Week 4
+|l |10    |1     |10    |10
+|h |5     |50    |5     |1
+|================================
+
+(a) Show that the following algorithm does not correctly solve this problem,bygiving an instance on which it does not return the correct answer.
+
+    For iterations i = 1 to n
+        If h_i+1 > l_i + l_i+1:
+            Output "choose no job in week i"
+            Output "choose a high-stress job in week i + 1"
+            Continue with iteration i + 2
+        else:
+            Output "Choose a low-stress job in week i"
+            Continue with iteration i + 1
+
+To avoid problems with overflowing array bounds, we define hi=i=0 when i > n. In your example, say what the correct answer is and also what the above algorithm finds.
+
+consider the given algorithm performed on the preceding table with n=4
+
+for the first iteration of the loop (i=1) we have the condition being checked equal to 5 > 10 + 1. This is clearly false so we have chose a low stress job in the first iteration with hi = 10 and we continue on to the next iteration
+
+For the second iteration (i=2) we are checking the condition equal to 50 > 11. Which is true, and hence we choose no job in week 2 and we have to choose a high stress job in week three with hi = 5. We know have total profit 15. We then continue to iteration 4.
+
+On our third and final iteration with i = 4 we are checking the condition 0 > 10 + 0. We choose a low stess job in the last iteration which gives us an additional profit of 1. 
+
+This i much less th the ideal plan with 70 profit. 
+
+The problem is starting i = 1. Starting i = 0 gives us the optimal plan.
+
+
+
+(b) Give an efficient algorithm that takes values for 1, 2,...,n and h1,h2,...,hn and returns the value of an optimal plan
+
+
+For iteration i = 0 to n:
+     if hi+1 >li + li+1:
+        Output “Choose no job in week i”
+        Output “Choose a high-stress job in week i+1”
+        Continue with iteration i+2
+    else:
+        Output “Choose a low-stress job in week i”
+        Continue with iteration i+1.
+
+explanation:
+    iterations
+     i = 0:
+      cond: 0 > 10
+      output: no work is done in week 0
+              cont to week 1
+     i = 1:
+      cond: 50 > 11
+      output: choose no job in week 1
+              choose high stress job in week 2 
+              hi = 50 
+              move to i = 3
+     i = 3:
+      cond: 1 > 20
+      output: choose a low stress job in week 3.
+              hi = 50 + 10
+              continue to iteration 4
+     i = 4:
+      cond: 0 > 10 
+            choose a low stress job in week 4
+            hi = 50 + 10 + 10
+
+
+--------------------
+ 
+ 
+.ap1.
+--------------------
+In your solution to problem 6.20 in this homework, draw the subproblem graph (not the recursion tree)
+for n = 5 and H = 10, g = 4.
+--------------------
+
+
+.ap2.
+--------------------
+2. Consider the matrix-chain multiplication problem with dimension sequence D = hd0, d1, . . . , dni. In this
+problem, we have to split a series of matrices with parentheses at some point. Suppose that we choose
+the matrix Ak at which to split
+Ai
+· · · Ak · · · Aj −→ (Ai
+· · · Ak)(Ak+1 · · · Aj )
+by selecting k in order to minimize di−1dkdj . This is a greedy divide-and-conquer approach.
+Give an example to show that this approach sometimes yields a suboptimal solution.
+
+--------------------
+
+.ap3.
+--------------------
+Draw the recursion tree for the merge sort algorithm on an array of 16 elements. Explain why memoization
+fails to speed up a good divide-and-conquer algorithm such as merge sort.
+
+--------------------
+
+
+.ap4.
+--------------------
+Recall the lightest path problem: given graph G and nodes s, t, find the path in G from s to t of least
+weight. Dijkstra’s algorithm is a greedy solution to this problem. This problem assumes that s and t
+are fixed.
+(i) Deduce the Bellman equation (the recursive weight equation) for this problem.
+(ii) Implement your function recursively in the associated python file.
+(iii) Implement your function iteratively in the associated python file.
+(iv) What is the Θ-complexity of your solution?
+--------------------
+
+
+
+
