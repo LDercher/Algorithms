@@ -240,37 +240,27 @@ def rand_weight_graph(num_nodes):  # {{{
 #----------------------------------------------------------------------------}}}
 
 def shortest_path_recursive(G, w, s, t, M=[]): # {{{
-  """
-  G is the graph, w is the set of weights on the edges of G, s and t are nodes
-  in G, and M is the memo for the function.
-  Returns a pair (path, weight). path an array of nodes in G connected by edges
-  with path[0] = s and path[-1] = t. weight is the sum of the edge weights in
-  path. This path should be the least weight path joining s to t. If no path
-  exists, return ([], 0).
-  """
+
 
   if not M:
     # Initialize your memo here. It depends on your exact implementation, but
     # it should be something like
     M = [ None for _ in G ]
-    M[s] = [s],0
 
-  if M[t] != None:
-    return M[t]
-  min_dist = float('inf')
-  next_node = find_first_occurence_index(None,M)
+  if s == t:
+    return [s], 0
+
+  mind_dist = float('inf')
+
   for u in G[s]:
-    if M[u] == None and u != s:
-        if w[(u,s)] < min_dist:
-            next_node = u
+    new_path, new_dist = shortest_path_recursive(G,w,u,t,M)
+    new_dist = w[(s,u)] + new_dist
+    if new_dist < mind_dist:
+      mind_dist = new_dist
+      min_path = [u] + new_path
+      M[u] = min_path, mind_dist
+  return min_path, mind_dist
 
-  y, w_y = shortest_path_recursive(G,w,next_node,M)
-  n, w_n = shortest_path_recursive(G,w,M[s][0][-1],M)
-
-  if w_y + w[(s,next_node)] >= w_n:
-    return list(set().union(y, M[s][0])), w_y + w[(s,next_node)]
-  else:
-    return n, w_n
 
 
 def find_first_occurence_index(elem,li):

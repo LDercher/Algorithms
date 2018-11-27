@@ -6,84 +6,20 @@ Email:     luke.dercher@gmail.com
 
 .6.20.
 --------------------
-Suppose you’re managing a consulting team of expert computer hackers, and each week you have to choose a job for them to undertake. Now, as you can well imagine, the set of possible jobs is divided into those that arelow-stress (e.g., setting up a Website for a class at the loca lelementary school) and those that are high-stress (e.g., protecting the nation’s most valuable secrets, or helping a desperate group of Cornell students finish a project that has something to do with compilers). The basic question, each week, is whether to take on a low-stress job or a high-stress job.
+Suppose it’s nearing the end of the semester and you’re taking n courses, each with a final project that still has to be done. Each project will be graded on the following scale: It will be assigned an integer number on a scale of 1 to g > 1, higher numbers being better grades. Your goal, of course, is to maximize your average grade on the n projects.
 
-If you select a low-stress job for your team in week i, then you get a revenue of i > 0 dollars; if you select a high-stress job, you get a revenue of hi > 0 dollars. The catch, however, is that in order for the team to take on a high-stress job in week i, it’s required that they do no job (of either type) in week i?1; they need a full week of prep time to get ready for the crushing stress level. On the other hand, it’s okay for them to take a lowstress job in week i even if they have done a job (of either type) in week i?1.
+You have a total of H > n hours in which to work on the n projects cumulatively, and you want to decide how to divide up this time. For simplicity, assume H is a positive integer, and you’ll spend an integer number of hours on each project. To figure out how best to divide up your time, you’ve come up with a set of functions {fi:i = 1, 2, . . . , n} (rough estimates, of course) for each of your n courses; if you spend h≤H hours on the project for course i, you’ll get a grade of fi(h). (You may assume that the functions fi are nondecreasing: if h < h' , then fi(h)≤fi(h' ).)
 
-So, given a sequence of n weeks, a plan is specified by a choice of “low-stress,” “high-stress,” or “none” for each of the n weeks, with the property that if “high-stress” is chosen for week i > 1, then “none” has to be chosen for week i?1. (It’s okay to choose a high-stress job in week 1.) The value of the plan is determined in the natural way: for each i, you add i to the value if you choose “low-stress” in week i, and you add hi to the value if you choose “high-stress” in week i. (You add 0 if you choose “none” in week i.)
+So the problem is: Given these functions {fi}, decide how many hours to spend on each project (in integer values only) so that your average grade, as computed according to the fi, is as large as possible. In order to be efficient, the running time of your algorithm should be polynomial in n, g, and H; none of these quantities should appear as an exponent in your running time.
 
-The problem. Given sets of values 1, 2,...,n and h1,h2,...,hn, find a plan of maximum value. (Such a plan will be called optimal.)
+let the (i,h) subproblem be the one which we wants to maximize our grade on the first i courses using at most h hours. 
 
-Example. Suppose n=4, and the values of i and hi are given by the following table. Then the plan of maximum value would be to choose “none” in week 1, a high-stress job in week 2, and low-stress jobs in weeks 3 and 4. The value of this plan would be 0+50+10+10=70.
+let A[i,h] be the max total grade you can recieve for this subproblem. 
 
-|================================
-|  |Week 1|Week 2|Week 3|Week 4
-|l |10    |1     |10    |10
-|h |5     |50    |5     |1
-|================================
-
-(a) Show that the following algorithm does not correctly solve this problem,bygiving an instance on which it does not return the correct answer.
-
-    For iterations i = 1 to n
-        If h_i+1 > l_i + l_i+1:
-            Output "choose no job in week i"
-            Output "choose a high-stress job in week i + 1"
-            Continue with iteration i + 2
-        else:
-            Output "Choose a low-stress job in week i"
-            Continue with iteration i + 1
-
-To avoid problems with overflowing array bounds, we define hi=i=0 when i > n. In your example, say what the correct answer is and also what the above algorithm finds.
-
-consider the given algorithm performed on the preceding table with n=4
-
-for the first iteration of the loop (i=1) we have the condition being checked equal to 5 > 10 + 1. This is clearly false so we have chose a low stress job in the first iteration with hi = 10 and we continue on to the next iteration
-
-For the second iteration (i=2) we are checking the condition equal to 50 > 11. Which is true, and hence we choose no job in week 2 and we have to choose a high stress job in week three with hi = 5. We know have total profit 15. We then continue to iteration 4.
-
-On our third and final iteration with i = 4 we are checking the condition 0 > 10 + 0. We choose a low stess job in the last iteration which gives us an additional profit of 1. 
-
-This i much less th the ideal plan with 70 profit. 
-
-The problem is starting i = 1. Starting i = 0 gives us the optimal plan.
-
-
-
-(b) Give an efficient algorithm that takes values for 1, 2,...,n and h1,h2,...,hn and returns the value of an optimal plan
-
-
-For iteration i = 0 to n:
-     if hi+1 >li + li+1:
-        Output “Choose no job in week i”
-        Output “Choose a high-stress job in week i+1”
-        Continue with iteration i+2
-    else:
-        Output “Choose a low-stress job in week i”
-        Continue with iteration i+1.
-
-explanation:
-    iterations
-     i = 0:
-      cond: 0 > 10
-      output: no work is done in week 0
-              cont to week 1
-     i = 1:
-      cond: 50 > 11
-      output: choose no job in week 1
-              choose high stress job in week 2 
-              hi = 50 
-              move to i = 3
-     i = 3:
-      cond: 1 > 20
-      output: choose a low stress job in week 3.
-              hi = 50 + 10
-              continue to iteration 4
-     i = 4:
-      cond: 0 > 10 
-            choose a low stress job in week 4
-            hi = 50 + 10 + 10
-
-
+A[0,h] = 0 for all h
+A[i,0] = sum j = 1 to i f_j(0)
+say we spend k hours on course i for some value 0 <= k <= h 
+A[i,h] = max (0<=k<=h) [f_i(k) + A[i-1,h-k]
 --------------------
  
  
@@ -102,6 +38,7 @@ the matrix Ak at which to split
 Ai
 · · · Ak · · · Aj −→ (Ai
 · · · Ak)(Ak+1 · · · Aj )
+
 by selecting k in order to minimize di−1dkdj . This is a greedy divide-and-conquer approach.
 Give an example to show that this approach sometimes yields a suboptimal solution.
 
@@ -121,9 +58,62 @@ Recall the lightest path problem: given graph G and nodes s, t, find the path in
 weight. Dijkstra’s algorithm is a greedy solution to this problem. This problem assumes that s and t
 are fixed.
 (i) Deduce the Bellman equation (the recursive weight equation) for this problem.
+
+ f(n) = n * log n
+
 (ii) Implement your function recursively in the associated python file.
+
+def shortest_path_recursive(G, w, s, t, M=[]): # {{{
+  
+  if not M:
+    M = [ None for _ in G ]
+
+  if s == t:
+    return [s], 0
+
+  mind_dist = float('inf')
+
+  for u in G[s]:
+    new_path, new_dist = shortest_path_recursive(G,w,u,t,M)
+    new_dist = w[(s,u)] + new_dist
+    if new_dist < mind_dist:
+      mind_dist = new_dist
+      min_path = [u] + new_path
+      M[u] = min_path, mind_dist
+  return min_path, mind_dist
+
 (iii) Implement your function iteratively in the associated python file.
+
+def shortest_path_iterative(G, w, s, t): # {{{
+  M = [ None for _ in G ]
+  dist = [ float('inf') for _ in G]
+  M[s] = [s],0
+  v = s
+  while v != t:
+    min_dist = float('inf')
+    min_path = []
+    next_node = find_first_occurence_index(None,M)
+    new_min = False
+    for u in G[v]:
+      if M[u] == None and u != v:
+        if w[(u,v)] < min_dist:
+          min_dist = w[(u,v)]
+          min_path = [u]
+          next_node = u
+          new_min = True
+    if new_min:
+      M[next_node] = (min_path + M[v][0],min_dist + M[v][1])
+    v = next_node
+
+  return M[t]
+
 (iv) What is the Θ-complexity of your solution?
+
+ 
+    Θ(nlogn)
+
+    note: memoization reduces from n^2 complexity if done correctly. 
+
 --------------------
 
 
