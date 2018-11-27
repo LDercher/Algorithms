@@ -2,6 +2,10 @@
 from __future__ import division
 from copy import deepcopy, copy
 from random import randrange
+from collections import deque
+from heapq import heapify, heappush, heappop
+from random import randrange
+import sys
 import heapq
 #---------------------------------------------------------------------------}}}1
 
@@ -249,45 +253,65 @@ def shortest_path_recursive(G, w, s, t, M=[]): # {{{
     # Initialize your memo here. It depends on your exact implementation, but
     # it should be something like
     M = [ None for _ in G ]
-    M[s] = 0
-  
-  
-  
+    M[s] = [s],0
 
-  return [], 0
+  if M[t] != None:
+    return M[t]
+  min_dist = float('inf')
+  next_node = find_first_occurence_index(None,M)
+  for u in G[s]:
+    if M[u] == None and u != s:
+        if w[(u,s)] < min_dist:
+            next_node = u
+
+  y, w_y = shortest_path_recursive(G,w,next_node,M)
+  n, w_n = shortest_path_recursive(G,w,M[s][0][-1],M)
+
+  if w_y + w[(s,next_node)] >= w_n:
+    return list(set().union(y, M[s][0])), w_y + w[(s,next_node)]
+  else:
+    return n, w_n
+
+
+def find_first_occurence_index(elem,li):
+  for i in range(0,len(li)-1):
+    if li[i] == elem:
+      return i
+  return -1
+
+
 #----------------------------------------------------------------------------}}}
 def shortest_path_iterative(G, w, s, t): # {{{
   M = [ None for _ in G ]
   dist = [ float('inf') for _ in G]
   M[s] = [s],0
-  v = s
   H = priority_dict({n: float('inf') for n in G.nodes})
   H.update_key(s, 0)
-
+  v = s
   while v != t:
     min_dist = float('inf')
     min_path = []
+    next_node = find_first_occurence_index(None,M)
+    new_min = False
     for u in G[v]:
-      print "checking adj nodes, ",u, v
-      pwv = w[(u,v)]
       if M[u] == None and u != v:
-        print "M pwv at ", v, " = ", M[v][1], "w edge", v, u, " = ", w[(u,v)]
-        pwv = M[v][1] + w[(u,v)]
-        print "checking path weight val", pwv
-        if pwv < min_dist:
-          min_dist = pwv
-          min_path = list(set().union([v],M[v][0],[u]))
-          print " min path found to be ", min_path, " with weight ", min_dist
+        if w[(u,v)] < min_dist:
+          min_dist = w[(u,v)]
+          min_path = [u]
           next_node = u
-    if next_node != v:
-      v = next_node
-      M[next_node] = min_path, min_dist
-    else:
-      v = M[v][0][-2]
+          new_min = True
+    if new_min:
+      print M[v]
+      M[next_node] = (min_path + M[v][0],min_dist + M[v][1])
     print M
-    print v
+    prev_node = v
+    v = next_node
+    print "v set to", v
 
-  return M
+  print M
+  print v
+
+  return M[t]
 
 
 
