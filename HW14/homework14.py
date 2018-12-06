@@ -241,10 +241,7 @@ def rand_weight_graph(num_nodes):  # {{{
 
 def shortest_path_recursive(G, w, s, t, M=[]): # {{{
 
-
   if not M:
-    # Initialize your memo here. It depends on your exact implementation, but
-    # it should be something like
     M = [ None for _ in G ]
 
   if s == t:
@@ -275,8 +272,6 @@ def shortest_path_iterative(G, w, s, t): # {{{
   M = [ None for _ in G ]
   dist = [ float('inf') for _ in G]
   M[s] = [s],0
-  H = priority_dict({n: float('inf') for n in G.nodes})
-  H.update_key(s, 0)
   v = s
   while v != t:
     min_dist = float('inf')
@@ -291,15 +286,8 @@ def shortest_path_iterative(G, w, s, t): # {{{
           next_node = u
           new_min = True
     if new_min:
-      print M[v]
       M[next_node] = (min_path + M[v][0],min_dist + M[v][1])
-    print M
-    prev_node = v
     v = next_node
-    print "v set to", v
-
-  print M
-  print v
 
   return M[t]
 

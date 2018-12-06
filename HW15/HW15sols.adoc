@@ -1,0 +1,75 @@
+HW 15 textbook solutions
+===========
+Author:    Luke Dercher
+Email:     luke.dercher@gmail.com
+===========
+
+.ap1.
+--------------------
+Recall that VertexCover (G, k) is the decision problem
+    Input: a graph G, an integer k,
+    Output: whether G has a vertex cover of size k.
+Suppose  that  we  have  an  algorithm  to  solve  this  problem  in  polynomial  time.   Use  this  algorithm  to
+produce another algorithm to actually find a vertex cover S⊆G
+of minimal size (that is, solving the optimization problem takes at most polynomially more work than solving the decision problem)
+
+suppose we have IndepSet S s.t. elements of S represent edges in graph G in the form of an adjacency list. The edges in G will form independent sets of nodes. Taking the inverse of set s to represent G \ S. We have a vertx covering. Hence I will take the largest indepSet found to be the inverse of the largest vertex covering.
+
+G in form of AdjList
+
+max_k = -1
+ for k in G:
+    if indepSet(G,k):
+        max_k = k
+return max_k
+--------------------
+ 
+ 
+.ap2.
+--------------------
+ Let U be  a  set  with |U|= n, S = (S_1, . . . , S_m)  a  collection  of subsets  of U,  and k an  integer.   The problem SetPack (U,S,k) is
+    Input: U,S,k as above,
+    Output: whether there is a subcollection R = (S_i1, . . . S_ik) of size k such that no two distinct members of R intersect. 
+Prove that IndepSet ≤_p SetPack
+
+intuition: IndepSet finds one set setpack finds multiple
+Again suppose we have IndepSet S s.t. elements of S represent edges in graph G in the form of an adjacency list.  Let G be a graph s.t. it is totally disconnected. The setpack G (converted to an adjList) is eqalt to S. 
+
+--------------------
+
+
+.ap3.
+--------------------
+Define Colorable (G, k) to be the problem
+    Input:graph G, integer k,
+    Output:whether G is k-colorable.
+Suppose  that  we  have  an  algorithm  to  solve  this  problem  in  polynomial  time.   Use  this  algorithm  to produce another algorithm to actually find a k-coloring of G such that k is minimal.
+
+min_k = 0
+for k in range (|G|..0):
+    if Colorable(G,k):
+        min_k = k
+
+  min_k
+
+colored_nodes = []
+
+color = -1 for all nodes in G
+
+while |colored_nodes| < |G|:
+    for i in G:
+        for j in G[i]:
+            color_k = true
+            new_k = -1
+            for k in range min_k:
+                if G[i] not in colored_nodes:
+                    if color[j] != k:
+                     color_k = false
+                     new_k = k
+        if color_k:
+            color[i] = new_k
+
+return color
+
+--------------------
+
